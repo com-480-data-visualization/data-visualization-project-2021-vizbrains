@@ -1,6 +1,6 @@
 # Music Trends --- Project of Data Visualization (COM-480)
 
-![Our logo](milestones/logo.png)
+![Our logo](img/logo.png)
 
 | Student's name | SCIPER |
 | -------------- | ------ |
@@ -10,8 +10,7 @@
 
 As three real music enthusiasts, we've always wanted to learn more and
 do some scientific research in the music domain. Accordingly, the
-dataset we chose is a collection of music data from a [Kaggle competition]
-(https://www.kaggle.com/yamaerenay/spotify-dataset-19212020-160k-tracks).
+dataset we chose is a collection of music data from a [Kaggle competition](https://www.kaggle.com/yamaerenay/spotify-dataset-19212020-160k-tracks).
 
 More precisely, the data consists of music features for about 600 000
 tracks and 1.1 million artists from the Spotify streaming service,
