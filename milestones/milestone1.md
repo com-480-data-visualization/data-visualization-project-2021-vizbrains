@@ -1,4 +1,4 @@
-For a more complete version, see [the equivalent PDF file](milestone1.pdf)
+For a more complete version, see [the equivalent PDF file](milestone1.pdf).
 
 # Dataset
 
@@ -70,21 +70,10 @@ the two datasets before cleaning and processing the merged dataset.
 
 We write some of findings here.
 
-First, the number of songs per year in our dataset is not uniform, as
-seen in figure [2](#fig:year_freq){reference-type="ref"
-reference="fig:year_freq"}.
+First, the number of songs per year in our dataset is not uniform.
 
 Second, in general the different features don't appear highly
-correlated, though there are some exceptions (see figure
-[3](#fig:features_corr){reference-type="ref"
-reference="fig:features_corr"}).
-
-![The number of songs by year in the
-dataset](figures/year_freq.png){#fig:year_freq width="\\linewidth"}
-
-![The Pearson correlation of each pair of
-features](figures/features_corr.png){#fig:features_corr
-width="\\linewidth"}
+correlated, though there are some exceptions.
 
 # Related Work
 
@@ -106,14 +95,6 @@ tracks?" whereas we would like to actually study popular artists and
 tracks evolution. Finally, we will especially focus on the visualization
 aspect, which was not the case for the related work that we found. You
 can find some examples of the analysis we found on Kaggle [here](https://www.kaggle.com/mohitkr05/spotify-data-visualization)
-
-![How the feature averages change with the
-year](figures/feaures_per_year.png){#fig:features_per_year
-width="\\linewidth"}
-
-![The overall top artists by
-popularity](figures/top_artists.png){#fig:top_artists
-width="\\linewidth"}
 
 As you can see below, we have very diverse sources of inspiration:
 

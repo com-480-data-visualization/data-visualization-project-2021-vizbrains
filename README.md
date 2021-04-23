@@ -8,12 +8,6 @@
 | Yanis Berkani  | 271348 |
 | Clément Petit  | 282626 |
 
-[Milestone 1 PDF](milestones/milestone1.pdf) • [Milestone 1 MD](milestones/milestone1.md)
-
-[Milestone 2 PDF](milestones/milestone2.pdf) • [Milestone 2 MD](milestones/milestone2.md)
-
-[Milestone 3 PDF](milestones/milestone3.pdf) • [Milestone 3 MD](milestones/milestone3.md)
-
 As three real music enthusiasts, we've always wanted to learn more and
 do some scientific research in the music domain. Accordingly, the
 dataset we chose is a collection of music data from a [Kaggle competition]
@@ -36,10 +30,18 @@ You can find out a lot more details about the features in our
 
 **10% of the final grade**
 
+[Milestone 1 PDF](milestones/milestone1.pdf) • [Milestone 1 MD](milestones/milestone1.md)
+
+
 ## Milestone 2 (7th May, 5pm)
 
 **10% of the final grade**
 
+[Milestone 2 PDF](milestones/milestone2.pdf) • [Milestone 2 MD](milestones/milestone2.md)
+
 ## Milestone 3 (4th June, 5pm)
 
 **80% of the final grade**
+
+[Milestone 3 PDF](milestones/milestone3.pdf) • [Milestone 3 MD](milestones/milestone3.md)
+
