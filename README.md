@@ -8,7 +8,11 @@
 | Yanis Berkani  | 271348 |
 | Clément Petit  | 282626 |
 
-[Milestone 1 PDF](milestones/milestone1.pdf) [Milestone 1 MD](milestones/milestone1.md)• [Milestone 2](#milestone-2) • [Milestone 3](#milestone-3)
+[Milestone 1 PDF](milestones/milestone1.pdf) • [Milestone 1 MD](milestones/milestone1.md)
+
+[Milestone 2 PDF](milestones/milestone2.pdf) • [Milestone 2 MD](milestones/milestone2.md)
+
+[Milestone 3 PDF](milestones/milestone3.pdf) • [Milestone 3 MD](milestones/milestone3.md)
 
 As three real music enthusiasts, we've always wanted to learn more and
 do some scientific research in the music domain. Accordingly, the
