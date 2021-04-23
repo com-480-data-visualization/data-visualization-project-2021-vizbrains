@@ -1,12 +1,8 @@
-![The logo for our visualisation service, Music
-Trends](figures/logo.png){#fig:logo}
-
 # Dataset
 
 As three real music enthusiasts, we've always wanted to learn more and
 do some scientific research in the music domain. Accordingly, the
-dataset we chose is a collection of music data from a Kaggle
-competition[^1].
+dataset we chose is a collection of music data from a [Kaggle competition](https://www.kaggle.com/yamaerenay/spotify-dataset-19212020-160k-tracks>).
 
 More precisely, the data consists of music features for about 600 000
 tracks and 1.1 million artists from the Spotify streaming service,
@@ -19,7 +15,7 @@ datasets:
 -   **Artists:** name, followers, popularity, genres.
 
 Note that you can find out a lot more details about the features in our
-`EDA.ipynb` notebook in our Github repository[^2].
+`EDA.ipynb` notebook.
 
 As often on Kaggle the data is quite clean, but it is still very
 important to do some cleaning and processing to make the data fit our
@@ -107,9 +103,7 @@ Also, they do not go further than "who are the most popular artists and
 tracks?" whereas we would like to actually study popular artists and
 tracks evolution. Finally, we will especially focus on the visualization
 aspect, which was not the case for the related work that we found. You
-can find some examples of the analysis we found on Kaggle in figure
-[\[fig:kaggle\]](#fig:kaggle){reference-type="ref"
-reference="fig:kaggle"}.[^3]
+can find some examples of the analysis we found on Kaggle [here](https://www.kaggle.com/mohitkr05/spotify-data-visualization)
 
 ![How the feature averages change with the
 year](figures/feaures_per_year.png){#fig:features_per_year
@@ -154,9 +148,3 @@ As you can see below, we have very diverse sources of inspiration:
 
 Note that none of us have already explored this dataset in another
 context.
-
-[^1]: <https://www.kaggle.com/yamaerenay/spotify-dataset-19212020-160k-tracks>
-
-[^2]: <https://github.com/com-480-data-visualization/data-visualization-project-2021-vizbrains>
-
-[^3]: <https://www.kaggle.com/mohitkr05/spotify-data-visualization>
