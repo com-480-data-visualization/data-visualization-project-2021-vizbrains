@@ -23,7 +23,7 @@ datasets:
 -   **Artists:** name, followers, popularity, genres.
 
 You can find out a lot more details about the features in our
-`EDA.ipynb` notebook.
+`EDA.ipynb` notebook (works best on Firefox).
 
 ## Milestone 1 (23rd April, 5pm)
 

@@ -17,7 +17,7 @@ datasets:
 -   **Artists:** name, followers, popularity, genres.
 
 Note that you can find out a lot more details about the features in our
-`EDA.ipynb` notebook.
+`EDA.ipynb` notebook (works best on Firefox).
 
 As often on Kaggle the data is quite clean, but it is still very
 important to do some cleaning and processing to make the data fit our
