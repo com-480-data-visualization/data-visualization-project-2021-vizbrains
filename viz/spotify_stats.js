@@ -252,11 +252,11 @@ class StretchableTimeline {
 
 whenDocumentLoaded(() => {
 
-	d3.json("out.json", function(err, json){
+	d3.json("viz/out.json", function(err, json){
 		let plot = new PlotByYear('plot', json);
 	});
 
-	d3.json("out.json", function(err, json){
+	d3.json("viz/out.json", function(err, json){
 		let st = new StretchableTimeline('timeline', json);
 	});
 
