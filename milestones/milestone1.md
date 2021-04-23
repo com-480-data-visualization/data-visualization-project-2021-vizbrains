@@ -1,3 +1,5 @@
+For a more complete version, see [the equivalent PDF file](milestone1.pdf)
+
 # Dataset
 
 As three real music enthusiasts, we've always wanted to learn more and
