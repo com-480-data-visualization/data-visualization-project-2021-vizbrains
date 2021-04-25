@@ -9,55 +9,6 @@ function whenDocumentLoaded(action) {
   }
 }
 
-class PlotByYear {
-  constructor(svg_element_id, data) {
-    this.data = data;
-    this.svg = d3.select('#' + svg_element_id);
-
-    const year_range = [d3.min(data, d => d.year), d3.max(data, d => d.year)];
-
-    const scaleY = d3.scaleLinear()
-      .domain(year_range)
-      .range([0, 1500]);
-
-    this.svg.append('rect')
-      .classed('plot-background', true)
-      .attr('width', 70)
-      .attr('height', 1500);
-
-    // Create Y labels
-    const label_ys = Array.from(Array(101), (elem, index) => 1920 + index);
-    this.svg.selectAll('text')
-      .data(label_ys)
-      .enter()
-        .append('text')
-        .text( d => d )
-        .attr('x', -10)
-        .attr('y', d => scaleY(d) + 5)
-        .style("font-size", "5px");
-
-    var elem = this.svg.selectAll("g")
-        .data(data)
-    .enter()
-        .append("g");
-
-
-    // Circle for each song
-    elem.append("circle")
-      .attr("r", d => d.popularity / 15) // radius
-      .attr("cx", 10) // position, rescaled
-      .attr("cy", d => scaleY(d.year) + 5)
-          .attr("fill", "blue");
-    
-    // Title for each song
-    elem.append("text")
-    .text( d => d.name)
-    .attr('x', 40)
-    .attr('y', d => scaleY(d.year) + 5)
-    .style("font-size", "2px");
-  }
-}
-
 class StretchableTimeline {
   constructor(svg_element_id, data) {
     this.data = data;
@@ -150,10 +101,14 @@ class StretchableTimeline {
       .attr("transform", "translate(0," + height2 + ")")
       .call(xAxis2);
 
-    context.append("g")
+    var slider = context.append("g")
       .attr("class", "brush")
+      .attr("cursor", "grab")
       .call(brush)
       .call(brush.move, x.range());
+    
+    slider.selectAll(".overlay").remove();
+    slider.selectAll(".handle").remove();
 
     focus.append("rect")
       .attr("class", "zoom")
@@ -165,66 +120,66 @@ class StretchableTimeline {
     
     // plot the songs data
     function plot() {
-      var ticks = xAxis.scale().ticks();
-      var filtered_data = data.filter(d => ticks.includes(d.year));
+			var ticks = xAxis.scale().ticks();
+			var filtered_data = data.filter(d => ticks.includes(d.year));
 
-      const circle = focus.selectAll('circle')
-      .data(filtered_data);
+			const circle = focus.selectAll('circle')
+			.data(filtered_data);
 
-      // Update point parameters when zooming or scrolling
-      circle
-        .attr("cx", d => x(d.year))
-        .attr("r", d => 20)
-        .attr("cy", d => y(d.popularity))
-        .attr("id", d => "a"+d.id)
-        // When hovering on this song point
-        .on("mouseover", d => {
-          // hide the circle
-          focus.select("#a" + d.id).attr('opacity', '0');
-          
-          // display a transparent rectangle to put song infos into
-          focus.append('rect')
-          .attr("class", "info")
-          .attr("id", "r"+d.id)
-          .attr("width", 450)
-          .attr("height", 80)
-          .attr("x", Math.min(x(d.year) - 20, width - 450))
-          .attr("y", y(d.popularity) - 20)
-          .attr("fill", "blue")
-          .attr('opacity', '.5');
+			// Update point parameters when zooming or scrolling
+			circle
+				.attr("cx", d => x(d.year))
+				.attr("r", d => 20)
+				.attr("cy", d => y(d.popularity))
+				.attr("id", d => "a"+d.id)
+				// When hovering on this song point
+				.on("mouseover", d => {
+					// hide the circle
+					focus.select("#a" + d.id).attr('opacity', '0');
+					
+					// display a transparent rectangle to put song infos into
+					focus.append('rect')
+					.attr("class", "info")
+					.attr("id", "r"+d.id)
+					.attr("width", 300)
+					.attr("height", 80)
+					.attr("x", Math.max(Math.min(x(d.year) - 150, width - 300), 0))
+					.attr("y", y(d.popularity) - 20)
+					.attr("rx", 10)
+					.attr("rx", 10);
 
-          // song title
-          focus.append('text')
-          .attr("class", "info")
-          .text(d.name)
-          .attr("x", Math.min(x(d.year) + 205, width - 205))
-          .attr("y", y(d.popularity) +10);
+					// song title
+					focus.append('text')
+					.attr("class", "info")
+					.text(d.name)
+					.attr("x", Math.max(Math.min(x(d.year), width - 150), 150))
+					.attr("y", y(d.popularity) +10);
 
-          // song artist
-          focus.append('text')
-          .attr("class", "info")
-          .text(d.artists)
-          .attr("x", Math.min(x(d.year) + 205, width - 205))
-          .attr("y", y(d.popularity) + 40);
-        })
-        // When putting cursor away from this point, remove infos and show the circle
-        .on("mouseout", d => {
-          focus.select("#a" + d.id).attr('opacity', '1');
-          focus.selectAll(".info").remove();
-        });
+					// song artist
+					focus.append('text')
+					.attr("class", "info")
+					.text(d.artists)
+					.attr("x", Math.max(Math.min(x(d.year), width - 150), 150))
+					.attr("y", y(d.popularity) + 40);
+				})
+				// When putting cursor away from this point, remove infos and show the circle
+				.on("mouseout", d => {
+					focus.select("#a" + d.id).attr('opacity', '1');
+					focus.selectAll(".info").remove();
+				});
 
-      // Add circles
-      circle
-        .enter()
-        .append('circle')
-        .attr("fill", "blue");
+			// Add circles
+			circle
+				.enter()
+				.append('circle')
+				.attr("class", "song_circle");
 
-      // Remove out-of-scope circles
-      circle
-        .exit()
-        .remove();
-        
-    };
+			// Remove out-of-scope circles
+			circle
+				.exit()
+				.remove();
+				
+		};
 
     function brushed() {
     if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom
@@ -252,7 +207,6 @@ class StretchableTimeline {
 
 whenDocumentLoaded(() => {
   d3.json("viz/data/best_songs.json", function(err, json){
-    let plot = new PlotByYear('plot', json);
     let st = new StretchableTimeline('timeline', json);
   });
 });

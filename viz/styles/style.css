@@ -15,20 +15,53 @@ html, body, figure {
 
 /* Default font and size */
 body {
-
-
-	/* center vertically */
-	/*display: flex;
-	flex-flow: row nowrap;
-	justify-content: center;
-	align-content: center;*/
-
-	/* background behind the plot */
-	background: rgb(40, 40, 40);
+	background: rgb(30, 30, 30);
 
 	/* default text */
 	font-family: sans-serif;
 	font-size: 1.1rem;
+	color: rgb(200, 200, 200);
+}
+
+text {
+	fill: rgb(200, 200, 200);
+	text-anchor: middle;
+  }
+
+/* Top Navigation bar */
+.topnav {
+	overflow: hidden;
+	margin-bottom: 50px;
+}
+
+.topnav h1 {
+	float: left;
+	margin: 0;
+}
+
+.topnav a {
+	float: right;
+	color: rgb(200, 200, 200);
+	text-align: center;
+	padding: 5px 5px;
+	margin-right: 100px;
+	text-decoration: none;
+	font-size: 17px;
+}
+
+.topnav a:hover {
+	color: white;
+}
+
+/* SVG plots */
+
+svg {
+	display: block;
+	margin: 100px auto;
+}
+
+rect {
+	fill: none;
 }
 
 .focus {
@@ -37,7 +70,7 @@ body {
 }
 
 .area {
-	fill: steelblue;
+	fill: #69b3a2;
 	clip-path: url(#clip);
 }
 
@@ -50,6 +83,15 @@ body {
 }
 
 .song_circle {
-	fill: #0000f0;
+	fill: #00531d;
 	cursor: auto;
+}
+
+rect.info {
+	fill: #01531d;
+	opacity: 0.9;
+}
+
+text.info {
+	font-size: 12px;
 }
