@@ -2,6 +2,17 @@
 
 ![Our logo](img/logo.png)
 
+## Setup and usage
+This might be simplified using a service such as Netlify eventually.
+
+The following is meant to be done in the terminal.
+You should have some browser as well as `python3` installed.
+1. Clone this repository where you want:
+`git clone https://github.com/com-480-data-visualization/data-visualization-project-2021-vizbrains`
+2. `cd` into the directory root (containing `index.html`) and run `python3 -m http.server`; copy the given url
+3. Paste the url in the browser and enjoy! 
+
+## Motivations
 | Student's name | SCIPER |
 | -------------- | ------ |
 | Auguste Baum   | 322935 |

@@ -109,4 +109,12 @@ whenDocumentLoaded(() => {
     let plot = new PlotYearComparator('year-comparator', json);
   });
 
+  // TODO
+  // Add the second year
+  // Need to space bubbles better -- can they be on several lines (some kind of wrapping?)
+  // or maybe just limit de amount of bubbles period.
+  // Add interactivity:
+  //   choose the bubbles
+  //   choose the features to show
+  //   show info on hover
 });
