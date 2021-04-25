@@ -1,3 +1,7 @@
+:root {
+	--textColor : rgb(200, 200, 200);
+}
+
 * {
 	box-sizing: border-box;
 }
@@ -20,11 +24,11 @@ body {
 	/* default text */
 	font-family: sans-serif;
 	font-size: 1.1rem;
-	color: rgb(200, 200, 200);
+	color: var(--textColor);
 }
 
 text {
-	fill: rgb(200, 200, 200);
+	fill: var(--textColor);
 	text-anchor: middle;
   }
 
@@ -41,7 +45,7 @@ text {
 
 .topnav a {
 	float: right;
-	color: rgb(200, 200, 200);
+	color: var(--textColor);
 	text-align: center;
 	padding: 5px 5px;
 	margin-right: 100px;
@@ -57,7 +61,16 @@ text {
 
 svg {
 	display: block;
-	margin: 100px auto;
+	padding: 30px;
+	margin: 70px auto;
+}
+
+.axis line {
+	stroke :var(--textColor);
+}
+
+.axis path {
+	stroke :var(--textColor);
 }
 
 rect {

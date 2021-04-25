@@ -91,6 +91,13 @@ class StretchableTimeline {
       .attr("class", "axis axis--y")
       .call(yAxis);
 
+    // text label for the y axis
+    svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0)
+    .attr("x", - (height / 2))
+    .text("Popularity");
+
     context.append("path")
       .datum(data)
       .attr("class", "area")
@@ -100,6 +107,14 @@ class StretchableTimeline {
       .attr("class", "axis axis--x")
       .attr("transform", "translate(0," + height2 + ")")
       .call(xAxis2);
+
+    // text label for the x axis
+    svg.append("text")             
+      .attr("transform",
+          "translate(" + (width/2) + " ," + 
+                        (margin2.top + margin .top + 60) + ")")
+      .style("text-anchor", "middle")
+      .text("Year");
 
     var slider = context.append("g")
       .attr("class", "brush")
