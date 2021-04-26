@@ -5,8 +5,12 @@ Bubble viz:
   - Gerer la transparence / le z-order des bulles
   - Distance entre les bulles pour indiquer la similitude?
 - ajouter des bandes horizontales indiquant a quoi correspond tel rayon de bulles
+  - Si c'est pas moche !
+    - Pt des petits ticks sur les bords a la place ?
+  - faire ca apres avoir mis la 2e annee
 - Rendre bulles interactives (choisir l'annee c'est plus important que choisir les facteurs)
 - Choisir combien de bulles au maximum et si elles peuvent wrap
+- Quelles quantites: essayer de tous normaliser mais check que ca couvre bien l'intervalle [0,1]
 
 Genres viz:
 - Forme: briques de texte colorees? dot matrix chart? Pie chart?
@@ -24,4 +28,9 @@ Timeline viz:
 Grande viz
 - mettre des liens spotify vers les musiques, ca fait une espece de voyage musical temporel
 idealement on en aurait plus d'une et elles auraient des genres assez varies
+  - embed spotify c'est pas tres dur mais c'est assez manuel a premiere vue
 - on pourrait faire par decennie (au choix du user)
+
+
+Pionneer viz
+- De quelles donnees on a besoin?
