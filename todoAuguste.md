@@ -10,7 +10,14 @@ Bubble viz:
   - faire ca apres avoir mis la 2e annee
 - Rendre bulles interactives (choisir l'annee c'est plus important que choisir les facteurs)
 - Choisir combien de bulles au maximum et si elles peuvent wrap
+  - Pt qu'un div pourrait faire le taf
 - Quelles quantites: essayer de tous normaliser mais check que ca couvre bien l'intervalle [0,1]
+  - Ajouter une maniere de passer une liste de quantites (ca pourra etre utiliser pour laisser le choix)
+
+
+Pour l'instant ca me parait logique de passer les features et les 2 annees comme des list au constructeur.
+Mais est-ce que c'est bien compatible avec la possibilite de changer ces infos? est-ce que le contrsucteur va etre relance a chaque fois qu'un choix est fait, comme je m'y attends?
+sinon je sais pas encore comment je vais faire
 
 Genres viz:
 - Forme: briques de texte colorees? dot matrix chart? Pie chart?
