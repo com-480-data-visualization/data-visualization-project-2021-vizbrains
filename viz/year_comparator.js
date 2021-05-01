@@ -188,18 +188,11 @@ class PlotYearComparator {
       .attr("stroke", "black");
 
     // Change the order so that the smallest bubble is always in the front
-    // bubbles.append("use")
-      // .attr("href", d =>
-	// "#" + d.feature + (
-	  // d.values[this.years[1]] > d.values[this.years[0]] ? "year1" : "year2"
-      // ))
-      // .attr("
     bubbles.append("use")
       .attr("href", d =>
 	"#" + d.feature + (
 	  d.values[this.years[1]] > d.values[this.years[0]] ? "year1" : "year2"
-      ))
-      .attr("
+      ));
   }
 }
 
