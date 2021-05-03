@@ -8,6 +8,7 @@ function whenDocumentLoaded(action) {
 }
 
 // Set the dimensions and margins of the graph
+// Should these be set elsewhere?
 var margin = {top: 30, right: 30, bottom: 70, left: 60};
 
 const maxRadius = 100;
@@ -19,54 +20,6 @@ const circleAreaScale = d3.scaleLinear()
   .range([0, maxCircleArea]);
 
 // --- To select the right data ------------------
-
-// THESE ARE WHEN THE OG DATA IS IN THE FORM:
-// {
-//   2001: [{quantity: 'energy', value: 0.5},
-//         {quantity: 'valence', value: 0.3}],
-//   2002: [{quantity: 'energy', value: 0.8},
-//         {quantity: 'valence', value: 0.9}],
-//   ...
-// }
-// This can be done with lodash but i don't know how to import yet
-// const zip = (a, b) => a.map((k, i) => [k, b[i]]);
-// A subset of a dictionary, but only the values
-// This SORTS BY INCREASING YEAR BY DEFAULT
-// This can be done with lodash but i don't know how to import yet
-// function pickYearsData(obj, years) {
-  // return Object.entries(obj)
-      // .filter(r => years.includes(parseInt(r[0])))
-      // .map(r => r[1]);
-// }
-
-// quantites is a list of dicts of the form
-// {quantity: 'energy', value: 0.5}
-// Return the list with only the quantities specified
-// This doesn't change the order of the list
-// function pickQuantity(obj, quantities) {
-  // return obj.filter(r => quantities.includes(r.quantity))
-// }
-
-// Return the list with only the quantities specified
-// With the form
-// [
-//   {quantity: "energy", values: [0.3, 0.7]},
-//   {quantity: "track_popularity", values: [0.01, 0.5]}
-// ]
-// function selectData(data, years, features) {
-  // var [fst, snd] = pickYearsData(data, years)
-    // .map(yearData => pickQuantity(yearData, features));
-
-  // zip(fst.map(r => r.value), snd.map(r => r.value))
-// }
-
-// THESE ARE WHEN THE OG DATA IS IN THE FORM:
-// {
-//   "valence": {"2001": 0.5, "2002": 0.8, ...},
-//   "energy" : {"2001": 0.2, "2002": 0.2, ...},
-//   ...
-// }
-// This is more elegant than the other form
 function pick(obj, keys) {
   return Object.entries(obj)
       .filter(r => keys.includes(r[0]))
@@ -98,7 +51,8 @@ class PlotYearComparator {
     svg_element_id,
     data,
     years, // A list of exactly 2 years
-    features // A list with the features to plot
+    features, // A list with the features to plot
+    feature_names // A dict that translates feature names to proper English
   ) {
 
     // Depending on if the constructor is rerun at each change, this might be useless
@@ -112,7 +66,6 @@ class PlotYearComparator {
     this.features = features;
 
     // Pick the 2 years from the data, then filter to get only the desired features
-    // this.data = selectData(this.data_full, this.years, this.features);
     this.data = selectData(data, this.years, this.features)
 
     this.svg = d3.select('#' + svg_element_id);
@@ -158,40 +111,50 @@ class PlotYearComparator {
     // Add the labels to each subgroup
     label_and_bubbles.append("text")
       .attr("dy", - maxRadius)
-      .attr("dx", maxRadius/2)
       // .attr("transform", "translate(-" + maxRadius/2 + ", 0)rotate(-25)")
-      .attr("transform", "rotate(-25)")
-      .text(d => d.feature)
+      // .attr("transform", "rotate(-25)")
+      .text(d => feature_names[d.feature])
+      // .text(d => d.feature)
       // That should come from Css
       .style("font-size", "12pt")
-      .style("text-anchor", "middle");
 
     // Do I need an extra group here?
     // Add the bubbles group to each subgroup
     var bubbles = label_and_bubbles.append("g")
-      .attr("class", "bubbles");
+      .classed("bubbles", true);
+
+    // Is there a way to modularise this?
 
     // Add the first bubble for each bubbles group
     bubbles.append("circle")
-      .attr("classed", "year1")
+      .attr("class", "year1")
+      // This is for the reusing later
       .attr("id", d => d.feature + "year1")
       .attr("r", d => scaleCircleArea(d.values[this.years[0]]))
-      .attr("fill", "#69b3a2") // Will be in CSS eventually
-      .attr("stroke", "black");
+      // .attr("fill", "#69b3a2") // Will be in CSS eventually
+      // .attr("stroke", "black")
+      .attr("opacity", d => (
+	// deal with opacity value in CSS
+	d.values[this.years[1]] > d.values[this.years[0]] ? 0.5 : 1
+      ));
 
     bubbles.append("circle")
-      .attr("classed", "year2")
+      .attr("class", "year2")
+      // This is for the reusing later
       .attr("id", d => d.feature + "year2")
       .attr("r", d => scaleCircleArea(d.values[this.years[1]]))
-      // .lower()
-      .attr("fill", "#fe5c5c") // Will be in CSS eventually
-      .attr("stroke", "black");
+      // .attr("fill", "#fe5c5c") // Will be in CSS eventually
+      // .attr("stroke", "black")
+      .attr("opacity", d => (
+	// deal with opacity value in CSS
+	d.values[this.years[1]] > d.values[this.years[0]] ? 1 : 0.5
+      ));
 
     // Change the order so that the smallest bubble is always in the front
     bubbles.append("use")
       .attr("href", d =>
 	"#" + d.feature + (
-	  d.values[this.years[1]] > d.values[this.years[0]] ? "year1" : "year2"
+	  d.values[this.years[1]] > d.values[this.years[0]] ? "year1" : null
       ));
   }
 }
@@ -202,13 +165,21 @@ whenDocumentLoaded(() => {
   var features = ['energy', 'danceability', 'valence', 'explicit', 'track_popularity']
   const data_in = "viz/data/year_averages_by_feature.json"
 
-  d3.json(data_in, function(err, json){
-    let plot = new PlotYearComparator(
-      'year-comparator',
-      json,
-      years,
-      features
-    );
+  d3.json(data_in, function(err, data){
+
+    // Putting the feature names in scope
+    d3.json("viz/data/features.json", function(err_, feature_names) {
+
+      let plot = new PlotYearComparator(
+	'year-comparator',
+	data,
+	years,
+	features,
+	feature_names
+      );
+
+    });
+
   });
 
   // TODO

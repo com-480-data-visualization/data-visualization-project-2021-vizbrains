@@ -93,10 +93,10 @@ class StretchableTimeline {
 
     // text label for the y axis
     svg.append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("y", 0)
-    .attr("x", - (height / 2))
-    .text("Popularity");
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0)
+      .attr("x", - (height / 2))
+      .text("Popularity");
 
     context.append("path")
       .datum(data)
@@ -135,66 +135,66 @@ class StretchableTimeline {
     
     // plot the songs data
     function plot() {
-			var ticks = xAxis.scale().ticks();
-			var filtered_data = data.filter(d => ticks.includes(d.year));
+      var ticks = xAxis.scale().ticks();
+      var filtered_data = data.filter(d => ticks.includes(d.year));
 
-			const circle = focus.selectAll('circle')
-			.data(filtered_data);
+      const circle = focus.selectAll('circle')
+      .data(filtered_data);
 
-			// Update point parameters when zooming or scrolling
-			circle
-				.attr("cx", d => x(d.year))
-				.attr("r", d => 20)
-				.attr("cy", d => y(d.popularity))
-				.attr("id", d => "a"+d.id)
-				// When hovering on this song point
-				.on("mouseover", d => {
-					// hide the circle
-					focus.select("#a" + d.id).attr('opacity', '0');
-					
-					// display a transparent rectangle to put song infos into
-					focus.append('rect')
-					.attr("class", "info")
-					.attr("id", "r"+d.id)
-					.attr("width", 300)
-					.attr("height", 80)
-					.attr("x", Math.max(Math.min(x(d.year) - 150, width - 300), 0))
-					.attr("y", y(d.popularity) - 20)
-					.attr("rx", 10)
-					.attr("rx", 10);
+      // Update point parameters when zooming or scrolling
+      circle
+        .attr("r", d => 20)
+        .attr("cx", d => x(d.year))
+        .attr("cy", d => y(d.popularity))
+        .attr("id", d => "a" + d.id)
+        // When hovering on this song point
+        .on("mouseover", d => {
+          // hide the circle
+          focus.select("#a" + d.id).attr('opacity', '0');
+          
+          // display a transparent rectangle to put song infos into
+          focus.append('rect')
+          .attr("class", "info")
+          .attr("id", "r"+d.id)
+          .attr("width", 300)
+          .attr("height", 80)
+          .attr("x", Math.max(Math.min(x(d.year) - 150, width - 300), 0))
+          .attr("y", y(d.popularity) - 20)
+          .attr("rx", 10)
+          .attr("rx", 10);
 
-					// song title
-					focus.append('text')
-					.attr("class", "info")
-					.text(d.name)
-					.attr("x", Math.max(Math.min(x(d.year), width - 150), 150))
-					.attr("y", y(d.popularity) +10);
+          // song title
+          focus.append('text')
+          .attr("class", "info")
+          .text(d.name)
+          .attr("x", Math.max(Math.min(x(d.year), width - 150), 150))
+          .attr("y", y(d.popularity) +10);
 
-					// song artist
-					focus.append('text')
-					.attr("class", "info")
-					.text(d.artists)
-					.attr("x", Math.max(Math.min(x(d.year), width - 150), 150))
-					.attr("y", y(d.popularity) + 40);
-				})
-				// When putting cursor away from this point, remove infos and show the circle
-				.on("mouseout", d => {
-					focus.select("#a" + d.id).attr('opacity', '1');
-					focus.selectAll(".info").remove();
-				});
+          // song artist
+          focus.append('text')
+          .attr("class", "info")
+          .text(d.artists)
+          .attr("x", Math.max(Math.min(x(d.year), width - 150), 150))
+          .attr("y", y(d.popularity) + 40);
+        })
+        // when putting cursor away from this point, remove infos and show the circle
+        .on("mouseout", d => {
+          focus.select("#a" + d.id).attr('opacity', '1');
+          focus.selectAll(".info").remove();
+        });
 
-			// Add circles
-			circle
-				.enter()
-				.append('circle')
-				.attr("class", "song_circle");
+      // Add circles
+      circle
+        .enter()
+        .append('circle')
+        .attr("class", "song_circle");
 
-			// Remove out-of-scope circles
-			circle
-				.exit()
-				.remove();
-				
-		};
+      // Remove out-of-scope circles
+      circle
+        .exit()
+        .remove();
+        
+    };
 
     function brushed() {
     if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom

@@ -12,6 +12,8 @@ You should have some browser as well as `python3` installed.
 2. `cd` into the directory root (containing `index.html`) and run `python3 -m http.server`; copy the given url
 3. Paste the url in the browser and enjoy! 
 
+More information about the audio features we use can be found [here](https://developer.spotify.com/documentation/web-api/reference/#object-audiofeaturesobject).
+
 ## Motivations
 | Student's name | SCIPER |
 | -------------- | ------ |

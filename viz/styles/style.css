@@ -30,7 +30,7 @@ body {
 text {
 	fill: var(--textColor);
 	text-anchor: middle;
-  }
+}
 
 /* Top Navigation bar */
 .topnav {
@@ -95,10 +95,24 @@ rect {
 	pointer-events: none;
 }
 
+/* Should all circles be grouped together? */
+/* Only if all circles should share a property */
 .song_circle {
 	fill: #00531d;
 	cursor: auto;
 }
+
+/* For the bubble viz */
+circle.year1 {
+        fill: #69b3a2;
+        stroke: black;
+}
+
+circle.year2 {
+        fill: #fe5c5c;
+        stroke: black;
+}
+
 
 rect.info {
 	fill: #01531d;
