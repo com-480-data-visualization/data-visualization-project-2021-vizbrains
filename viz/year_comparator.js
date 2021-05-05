@@ -131,8 +131,8 @@ class PlotYearComparator {
       // This is for the reusing later
       .attr("id", d => d.feature + "year1")
       .attr("r", d => scaleCircleArea(d.values[this.years[0]]))
-      // .attr("fill", "#69b3a2") // Will be in CSS eventually
-      // .attr("stroke", "black")
+      .attr("fill", "#69b3a2") // Will be in CSS eventually
+      .attr("stroke", "black")
       .attr("opacity", d => (
 	// deal with opacity value in CSS
 	d.values[this.years[1]] > d.values[this.years[0]] ? 0.5 : 1
@@ -143,8 +143,8 @@ class PlotYearComparator {
       // This is for the reusing later
       .attr("id", d => d.feature + "year2")
       .attr("r", d => scaleCircleArea(d.values[this.years[1]]))
-      // .attr("fill", "#fe5c5c") // Will be in CSS eventually
-      // .attr("stroke", "black")
+      .attr("fill", "#fe5c5c") // Will be in CSS eventually
+      .attr("stroke", "black")
       .attr("opacity", d => (
 	// deal with opacity value in CSS
 	d.values[this.years[1]] > d.values[this.years[0]] ? 1 : 0.5
@@ -161,7 +161,7 @@ class PlotYearComparator {
 
 
 whenDocumentLoaded(() => {
-  var years = [2001, 1923]
+  var years = [2001, 1950]
   var features = ['energy', 'danceability', 'valence', 'explicit', 'track_popularity']
   const data_in = "viz/data/year_averages_by_feature.json"
 
