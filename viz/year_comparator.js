@@ -50,11 +50,39 @@ class PlotYearComparator {
   constructor(
     svg_element_id,
     data,
-    years, // A list of exactly 2 years
+    // years, // A list of exactly 2 years
     features, // A list with the features to plot
-    feature_names // A dict that translates feature names to proper English
+    feature_names // A dict that translates feature names to proper English; does it have to be an input?
   ) {
 
+    // First the sliders
+    const sliderDiv = d3.select(".slide_container");
+
+    // For year 1
+    this.slider1 = sliderDiv.append("input")
+      .classed("slider", true)
+      .attr("id", "slider_year1")
+      .attr("type", "range")
+      .attr("min", "1922") // Get these from the data
+      .attr("max", "2021");
+
+    sliderDiv.append("text")
+      .classed("sliderText", true)
+      .attr("id", "text_year1")
+      // Get the value of the slider using this.slider.value
+      // .text(this.slider1.value);
+      .text("1998");
+
+    // For year 2
+    // Repetition here...
+    this.slider2 = sliderDiv.append("input")
+      .classed("slider", true)
+      .attr("id", "slider_year2")
+      .attr("type", "range")
+      .attr("min", "1922") // Get these from the data
+      .attr("max", "2021");
+
+    
     // Depending on if the constructor is rerun at each change, this might be useless
     // this.data_full = data;
 
@@ -62,12 +90,30 @@ class PlotYearComparator {
     // When the viz first starts the behaviour should be deterministic
     // but it's probably not necessary to keep it this way once the viz is live
     // Check that there are exactly 2 years?
-    this.years = years.map(y => y.toString());
+    var years = ["1950", "2001"];
+
+    // this.years = years.map(y => y.toString());
     this.features = features;
 
     // Pick the 2 years from the data, then filter to get only the desired features
-    this.data = selectData(data, this.years, this.features)
+    this.data = selectData(data, years, this.features);
 
+    // --- What to do when sliders are changed -------------
+    const update_year1 = function(year) {
+      // Change the text
+      d3.select("#text_year1").text(year);
+      // Then change the circles
+      years[0] = year.toString();
+    };
+
+    this.slider1.on("input", function() {
+      // Will it be the right `this`?
+      update_year1(+this.value);
+    })
+
+
+
+    // The SVG canvas
     this.svg = d3.select('#' + svg_element_id);
 
     // --- Set scales -------------------------
@@ -111,11 +157,7 @@ class PlotYearComparator {
     // Add the labels to each subgroup
     label_and_bubbles.append("text")
       .attr("dy", - maxRadius)
-      // .attr("transform", "translate(-" + maxRadius/2 + ", 0)rotate(-25)")
-      // .attr("transform", "rotate(-25)")
       .text(d => feature_names[d.feature])
-      // .text(d => d.feature)
-      // That should come from Css
       .style("font-size", "12pt")
 
     // Do I need an extra group here?
@@ -130,33 +172,34 @@ class PlotYearComparator {
       .attr("class", "year1")
       // This is for the reusing later
       .attr("id", d => d.feature + "year1")
-      .attr("r", d => scaleCircleArea(d.values[this.years[0]]))
+      .attr("r", d => scaleCircleArea(d.values[years[0]]))
       .attr("fill", "#69b3a2") // Will be in CSS eventually
       .attr("stroke", "black")
       .attr("opacity", d => (
 	// deal with opacity value in CSS
-	d.values[this.years[1]] > d.values[this.years[0]] ? 0.5 : 1
+	d.values[years[1]] > d.values[years[0]] ? 0.5 : 1
       ));
 
     bubbles.append("circle")
       .attr("class", "year2")
       // This is for the reusing later
       .attr("id", d => d.feature + "year2")
-      .attr("r", d => scaleCircleArea(d.values[this.years[1]]))
+      .attr("r", d => scaleCircleArea(d.values[years[1]]))
       .attr("fill", "#fe5c5c") // Will be in CSS eventually
       .attr("stroke", "black")
       .attr("opacity", d => (
 	// deal with opacity value in CSS
-	d.values[this.years[1]] > d.values[this.years[0]] ? 1 : 0.5
+	d.values[years[1]] > d.values[years[0]] ? 1 : 0.5
       ));
 
     // Change the order so that the smallest bubble is always in the front
     bubbles.append("use")
       .attr("href", d =>
 	"#" + d.feature + (
-	  d.values[this.years[1]] > d.values[this.years[0]] ? "year1" : null
+	  d.values[years[1]] > d.values[years[0]] ? "year1" : null
       ));
-  }
+
+  };
 }
 
 
@@ -171,7 +214,7 @@ whenDocumentLoaded(() => {
     d3.json("viz/data/features.json", function(err_, feature_names) {
 
       let plot = new PlotYearComparator(
-	'year-comparator',
+	'year_comparator',
 	data,
 	years,
 	features,
