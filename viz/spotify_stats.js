@@ -11,7 +11,11 @@ function whenDocumentLoaded(action) {
 
 class StretchableTimeline {
   constructor(svg_element_id, data) {
-    const data_ = d3.nest().key(d => d.year).rollup(v => v.filter(d => d.track_popularity == d3.max(v, d_ => d_.track_popularity))[0]).entries(data).map(d => d.value);
+    const data_ = d3.nest()
+      .key(d => d.year)
+      .rollup(v => v.filter(d => d.track_popularity == d3.max(v, d_ => d_.track_popularity))[0])
+      .entries(data)
+      .map(d => d.value);
     this.svg = d3.select('#' + svg_element_id);
     
     var svg = this.svg,
@@ -135,7 +139,7 @@ class StretchableTimeline {
     
     // plot the songs data
     function plot() {
-      console.log(data_);
+      // console.log(data_);
             var ticks = xAxis.scale().ticks();
             var filtered_data = data_.filter(d => ticks.includes(d.year));
 
