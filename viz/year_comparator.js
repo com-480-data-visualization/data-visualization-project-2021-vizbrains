@@ -50,7 +50,7 @@ class PlotYearComparator {
   constructor(
     svg_element_id,
     data,
-    // years, // A list of exactly 2 years
+    years, // A list of exactly 2 years
     features, // A list with the features to plot
     feature_names // A dict that translates feature names to proper English; does it have to be an input?
   ) {
@@ -172,31 +172,31 @@ class PlotYearComparator {
       .attr("class", "year1")
       // This is for the reusing later
       .attr("id", d => d.feature + "year1")
-      .attr("r", d => scaleCircleArea(d.values[years[0]]))
+      .attr("r", d => scaleCircleArea(d.values[this.years[0]]))
       .attr("fill", "#69b3a2") // Will be in CSS eventually
       .attr("stroke", "black")
       .attr("opacity", d => (
 	// deal with opacity value in CSS
-	d.values[years[1]] > d.values[years[0]] ? 0.5 : 1
+	d.values[this.years[1]] > d.values[this.years[0]] ? 0.5 : 1
       ));
 
     bubbles.append("circle")
       .attr("class", "year2")
       // This is for the reusing later
       .attr("id", d => d.feature + "year2")
-      .attr("r", d => scaleCircleArea(d.values[years[1]]))
+      .attr("r", d => scaleCircleArea(d.values[this.years[1]]))
       .attr("fill", "#fe5c5c") // Will be in CSS eventually
       .attr("stroke", "black")
       .attr("opacity", d => (
 	// deal with opacity value in CSS
-	d.values[years[1]] > d.values[years[0]] ? 1 : 0.5
+	d.values[this.years[1]] > d.values[this.years[0]] ? 1 : 0.5
       ));
 
     // Change the order so that the smallest bubble is always in the front
     bubbles.append("use")
       .attr("href", d =>
 	"#" + d.feature + (
-	  d.values[years[1]] > d.values[years[0]] ? "year1" : null
+	  d.values[this.years[1]] > d.values[this.years[0]] ? "year1" : null
       ));
 
   };
