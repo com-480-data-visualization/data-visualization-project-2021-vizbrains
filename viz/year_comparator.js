@@ -90,9 +90,9 @@ class PlotYearComparator {
     // When the viz first starts the behaviour should be deterministic
     // but it's probably not necessary to keep it this way once the viz is live
     // Check that there are exactly 2 years?
-    var years = ["1950", "2001"];
+    // var years = ["1950", "2001"];
 
-    // this.years = years.map(y => y.toString());
+    var years = years.map(y => y.toString());
     this.features = features;
 
     // Pick the 2 years from the data, then filter to get only the desired features
