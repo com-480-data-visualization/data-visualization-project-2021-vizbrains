@@ -25,7 +25,6 @@ class StretchableTimeline {
       height = +500 - margin.top - margin.bottom,
       height2 = +500 - margin2.top - margin2.bottom;
 
-
     const year_range = [d3.min(data_, d => d.year), d3.max(data_, d => d.year)];
 
     const x = d3.scaleLinear().domain(year_range).range([0, width]),
@@ -202,25 +201,25 @@ class StretchableTimeline {
         };
 
     function brushed() {
-    if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom
-    s = d3.event.selection || x2.range();
-    x.domain(s.map(x2.invert, x2));
-    focus.select(".area").attr("d", area);
-    focus.select(".axis--x").call(xAxis);
-    svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
-      .scale(width / (s[1] - s[0]))
-      .translate(-s[0], 0));
-    plot();
+      if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom
+      s = d3.event.selection || x2.range();
+      x.domain(s.map(x2.invert, x2));
+      focus.select(".area").attr("d", area);
+      focus.select(".axis--x").call(xAxis);
+      svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
+	.scale(width / (s[1] - s[0]))
+	.translate(-s[0], 0));
+      plot();
     }
 
     function zoomed() {
-    if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") return; // ignore zoom-by-brush
-    t = d3.event.transform;
-    x.domain(t.rescaleX(x2).domain());
-    focus.select(".area").attr("d", area);
-    focus.select(".axis--x").call(xAxis);
-    context.select(".brush").call(brush.move, x.range().map(t.invertX, t));
-    plot();
+      if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") return; // ignore zoom-by-brush
+      t = d3.event.transform;
+      x.domain(t.rescaleX(x2).domain());
+      focus.select(".area").attr("d", area);
+      focus.select(".axis--x").call(xAxis);
+      context.select(".brush").call(brush.move, x.range().map(t.invertX, t));
+      plot();
     }
   }
 }
