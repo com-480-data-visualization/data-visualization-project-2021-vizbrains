@@ -1,113 +1,112 @@
 :root {
-	--textColor : rgb(200, 200, 200);
+  --textColor: rgb(200, 200, 200);
 }
 
 * {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /*
 Make the document fill the whole viewport, this overrides any weird defaults that browsers might have.
 */
-html, body, figure {
-	width: 100%;
-	height: 100%;
-	padding: 0;
-	margin: 0;
-	border: 0;
+html,
+body,
+figure {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: 0;
 }
 
 /* Default font and size */
 body {
-	background: rgb(30, 30, 30);
+  background: rgb(30, 30, 30);
 
-	/* default text */
-	font-family: sans-serif;
-	font-size: 1.1rem;
-	color: var(--textColor);
+  /* default text */
+  font-family: sans-serif;
+  font-size: 1.1rem;
+  color: var(--textColor);
 }
 
 text {
-	fill: var(--textColor);
-	text-anchor: middle;
+  fill: var(--textColor);
+  text-anchor: middle;
 }
 
 /* Top Navigation bar */
 .topnav {
-	overflow: hidden;
-	margin-bottom: 50px;
+  overflow: hidden;
+  margin-bottom: 50px;
 }
 
 .topnav h1 {
-	float: left;
-	margin: 0;
+  float: left;
+  margin: 0;
 }
 
 .topnav a {
-	float: right;
-	color: var(--textColor);
-	text-align: center;
-	padding: 5px 5px;
-	margin-right: 100px;
-	text-decoration: none;
-	font-size: 17px;
+  float: right;
+  color: var(--textColor);
+  text-align: center;
+  padding: 5px 5px;
+  margin-right: 100px;
+  text-decoration: none;
+  font-size: 17px;
 }
 
 .topnav a:hover {
-	color: white;
+  color: white;
 }
 
 /* SVG plots */
 
 svg {
-	display: block;
-	padding: 30px;
-	margin: 70px auto;
+  display: block;
+  padding: 30px;
+  margin: 70px auto;
 }
 
 .axis line {
-	stroke :var(--textColor);
+  stroke: var(--textColor);
 }
 
 .axis path {
-	stroke :var(--textColor);
-}
-
-rect {
-	fill: blue;
+  stroke: var(--textColor);
 }
 
 .focus {
-	cursor: move;
-	pointer-events: all;
+  cursor: move;
+  pointer-events: all;
 }
 
 .area {
-	fill: #69b3a2;
-	clip-path: url(#clip);
+  fill: #69b3a2;
+  clip-path: url(#clip);
 }
 
 .zoom {
-	fill: none;
+  fill: none;
 }
 
 .info {
-	pointer-events: none;
+  pointer-events: none;
 }
 
-.slide_container {
-  width: 100%;
+.slider_container {
+  width: 60%;
+  margin: auto;
 }
 
 /* Adapted from https://www.w3schools.com/howto/howto_js_rangeslider.asp */
 .slider {
-  width:100%;
+  width: 80%;
   height: 25px;
-  background: #d3d3d3;
+  background: #d303d3;
   outline: none;
   opacity: 0.7;
-  -webkit-transition: .2s;
-  transition: opacity .2s;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
 }
 
 .slider:hover {
@@ -118,43 +117,55 @@ rect {
   -webkit-appearance: none;
   appearance: none;
   width: 25px;
-  height: 25px;
-  background: #04AA6D;
+  height: 5px;
+  background: #04aa6d;
   cursor: pointer;
 }
 
 .slider::-moz-range-thumb {
-  width: 25px;
+  width: 5px;
   height: 25px;
-  background: #04AA6D;
+  background: #04aa6d;
   cursor: pointer;
+}
+
+#slider_year1 {
+  background: #69b3a2;
+}
+
+#slider_year2 {
+  background: #fe5c5c;
 }
 
 /* Should all circles be grouped together? */
 /* Only if all circles should share a property */
 .song_circle {
-	fill: #00531d;
-	cursor: auto;
+  fill: #00531d;
+  cursor: auto;
+}
+
+rect.info {
+  fill: #01531d;
+  opacity: 0.9;
+}
+
+text.info {
+  font-size: 12px;
 }
 
 /* For the bubble viz */
 /* Doesn't seem to do anything when I remove the attr in the js */
 circle.year1 {
-        fill: #69b3a2;
-        stroke: black;
+  fill: #69b3a2;
+  stroke: black;
 }
 
 circle.year2 {
-        fill: #fe5c5c;
-        stroke: black;
+  fill: #fe5c5c;
+  stroke: black;
 }
 
-
-rect.info {
-	fill: #01531d;
-	opacity: 0.9;
-}
-
-text.info {
-	font-size: 12px;
+text.feature_label {
+  font-size: 18px;
+  text-anchor: end;
 }

@@ -9,20 +9,12 @@ function whenDocumentLoaded(action) {
 
 // Set the dimensions and margins of the graph
 // Should these be set elsewhere?
-var margin = {top: 30, right: 30, bottom: 70, left: 60};
-
-const maxRadius = 100;
-const maxCircleArea = Math.PI * Math.pow(maxRadius, 2);
-
-const circleAreaScale = d3.scaleLinear()
-  // Our data will always be in [0, 1]
-  .domain([0, 1])
-  .range([0, maxCircleArea]);
+const margin = {top: 30, right: 0, bottom: 0, left: 100};
 
 // --- To select the right data ------------------
 function pick(obj, keys) {
   return Object.entries(obj)
-      .filter(r => keys.includes(r[0]))
+    .filter(r => keys.includes(r[0]))
 }
 
 function selectData(data, years, features) {
@@ -36,14 +28,9 @@ function selectData(data, years, features) {
 // function takeRandom(list, numberItems) { }
 
 // For generating a random year at reload
-function randomNum(a, b) {
-  return Math.floor((Math.random() * (b - a + 1)) + a)
-}
-
-// To get the radius based on the area
-function scaleCircleArea(d) {
-  return Math.sqrt(circleAreaScale(d) / Math.PI)
-}
+// function randomNum(a, b) {
+  // return Math.floor((Math.random() * (b - a + 1)) + a)
+// }
 
 // --- Actual plot now ----------------------------
 class PlotYearComparator {
@@ -55,23 +42,27 @@ class PlotYearComparator {
     feature_names // A dict that translates feature names to proper English; does it have to be an input?
   ) {
 
+    this.data_full = data;
+    this.features = features;
+    this.feature_names = feature_names;
+    this.years = ["1950", "2001"];
+
     // First the sliders
-    const sliderDiv = d3.select(".slide_container");
+    const sliderDiv = d3.select(".slider_container");
 
     // For year 1
     this.slider1 = sliderDiv.append("input")
       .classed("slider", true)
       .attr("id", "slider_year1")
       .attr("type", "range")
-      .attr("min", "1922") // Get these from the data
+      .attr("min", "1922")
       .attr("max", "2021");
 
+    // Show the year on the side
     sliderDiv.append("text")
       .classed("sliderText", true)
       .attr("id", "text_year1")
-      // Get the value of the slider using this.slider.value
-      // .text(this.slider1.value);
-      .text("1998");
+      .text(this.years[0]);
 
     // For year 2
     // Repetition here...
@@ -79,132 +70,147 @@ class PlotYearComparator {
       .classed("slider", true)
       .attr("id", "slider_year2")
       .attr("type", "range")
-      .attr("min", "1922") // Get these from the data
+      .attr("min", "1922")
       .attr("max", "2021");
 
+    // Show the year on the side
+    sliderDiv.append("text")
+      .classed("sliderText", true)
+      .attr("id", "text_year2")
+      .text(this.years[1]);
+
     
-    // Depending on if the constructor is rerun at each change, this might be useless
-    // this.data_full = data;
-
-    // Like this for now
-    // When the viz first starts the behaviour should be deterministic
-    // but it's probably not necessary to keep it this way once the viz is live
-    // Check that there are exactly 2 years?
-    // var years = ["1950", "2001"];
-
-    var years = years.map(y => y.toString());
-    this.features = features;
-
-    // Pick the 2 years from the data, then filter to get only the desired features
-    this.data = selectData(data, years, this.features);
-
-    // --- What to do when sliders are changed -------------
-    const update_year1 = function(year) {
-      // Change the text
-      d3.select("#text_year1").text(year);
-      // Then change the circles
-      years[0] = year.toString();
-    };
-
-    this.slider1.on("input", function() {
-      // Will it be the right `this`?
-      update_year1(+this.value);
-    })
-
-
-
     // The SVG canvas
     this.svg = d3.select('#' + svg_element_id);
-
+    
     // --- Set scales -------------------------
     const [o_x, o_y, w, h] = this.svg.attr("viewBox")
       .split(' ')
       .map(parseFloat);
 
-    const xRange = [o_x + margin.left, w - margin.right];
-    const yRange = [o_y + margin.top, h - margin.bottom].reverse();
+    this.xRange = [o_x + margin.left, w - margin.right];
+    this.yRange = [o_y + margin.top, h - margin.bottom].reverse();
 
     // --- Set background -------------------------
-    this.svg.append('rect')
-      .classed('plot-background', true)
-      .attr('width', w)
-      .attr('height', h);
+    // this.svg.append('rect')
+      // .classed('plot-background', true)
+      // .attr('width', w)
+      // .attr('height', h);
 
     // --- Create X labels -------------------------
-    // Get range of values
-    var x = d3.scaleBand()
-      .range(xRange)
-      .domain(this.data.map(d => d.feature));
-      // .round(true)
-      // .padding(100);
-
-    var y = d3.scaleLinear()
-      .range(yRange)
+    this.x = d3.scaleLinear()
+      .range(this.xRange)
       .domain([0,1])
 
     // This group contains all text+bubbles groups
-    var g = this.svg.append("g")
-      .attr("transform", "translate(40,0)");
+    this.g = this.svg.append("g");
+      // .attr("transform", "translate(40,0)");
 
-    // These groups will hold the labels and the groups of 2 bubbles
-    var label_and_bubbles = g.selectAll("g")
+    this.draw();
+  };
+
+  // Could I regroup draw and redraw? It's duplicate code...
+  draw() {
+    // Pick the 2 years from the data, then filter to get only the desired features
+    this.data = selectData(
+      this.data_full,
+      this.years,
+      this.features
+    );
+
+    var [year1, year2] = this.years;
+
+    // Add labels
+    this.y = d3.scaleBand()
+      .range(this.yRange)
+      .domain([...Array(this.features.length).keys()]);
+    
+    this.g.selectAll("text.feature_label")
       .data(this.data)
       .enter()
-      .append("g")
-      .attr("transform", d =>
-	"translate(" + x(d.feature) + ", " + y(0.5) + ")");
-      
-    // Add the labels to each subgroup
-    label_and_bubbles.append("text")
-      .attr("dy", - maxRadius)
-      .text(d => feature_names[d.feature])
-      .style("font-size", "12pt")
+      .append("text")
+	.classed("feature_label", true)
+        .attr("x", this.x(0))
+        .attr("dx", -20)
+	.attr("y", (d, i) => this.y(i))
+	.text(d => this.feature_names[d.feature]);
 
-    // Do I need an extra group here?
-    // Add the bubbles group to each subgroup
-    var bubbles = label_and_bubbles.append("g")
-      .classed("bubbles", true);
+    // Year 1 circles
+    this.g.selectAll("circle.year1")
+      .data(this.data)
+      .enter()
+      .append("circle")
+	.classed("year1", true)
+	// .attr("id", d => d.feature + "year1")
+	.attr("r", 15)
+	.attr("cx", (d, i) => this.x(d.values[year1]))
+	.attr("cy", (d, i) => this.y(i));
 
-    // Is there a way to modularise this?
+    // Year 2 circles
+    this.g.selectAll("circle.year2")
+      .data(this.data)
+      .enter()
+      .append("circle")
+	.classed("year2", true)
+	// .attr("id", d => d.feature + "year1")
+	.attr("r", 15)
+	.attr("cx", (d, i) => this.x(d.values[year2]))
+	.attr("cy", (d, i) => this.y(i));
+  };
 
-    // Add the first bubble for each bubbles group
-    bubbles.append("circle")
-      .attr("class", "year1")
-      // This is for the reusing later
-      .attr("id", d => d.feature + "year1")
-      .attr("r", d => scaleCircleArea(d.values[years[0]]))
-      .attr("fill", "#69b3a2") // Will be in CSS eventually
-      .attr("stroke", "black")
-      .attr("opacity", d => (
-	// deal with opacity value in CSS
-	d.values[years[1]] > d.values[years[0]] ? 0.5 : 1
-      ));
+  redrawBubbles() {
+    // Pick the 2 years from the data, then filter to get only the desired features
+    this.data = selectData(
+      this.data_full,
+      this.years,
+      this.features
+    );
 
-    bubbles.append("circle")
-      .attr("class", "year2")
-      // This is for the reusing later
-      .attr("id", d => d.feature + "year2")
-      .attr("r", d => scaleCircleArea(d.values[years[1]]))
-      .attr("fill", "#fe5c5c") // Will be in CSS eventually
-      .attr("stroke", "black")
-      .attr("opacity", d => (
-	// deal with opacity value in CSS
-	d.values[years[1]] > d.values[years[0]] ? 1 : 0.5
-      ));
+    var [year1, year2] = this.years;
 
-    // Change the order so that the smallest bubble is always in the front
-    bubbles.append("use")
-      .attr("href", d =>
-	"#" + d.feature + (
-	  d.values[years[1]] > d.values[years[0]] ? "year1" : null
-      ));
+    // Recompute y axis in case
+    this.y = d3.scaleBand()
+      .range(this.yRange)
+      .domain([...Array(this.features.length).keys()]);
+    
+    var feature_labels = this.g.selectAll("text.feature_label")
+      .data(this.data);
 
+    feature_labels.exit().remove();
+    feature_labels.enter().append("text");
+
+    feature_labels.transition().duration(200)
+      .attr("y", (d, i) => this.y(i))
+      .text(d => this.feature_names[d.feature]);
+
+    // Year 1 circles
+    var circles_year1 = this.g.selectAll("circle.year1")
+      .data(this.data);
+
+    circles_year1.exit().remove();
+    circles_year1.enter().append("circle")
+      .attr("r", 15);
+
+    circles_year1.transition().duration(200)
+      .attr("cx", (d, i) => this.x(d.values[year1]))
+      .attr("cy", (d, i) => this.y(i));
+
+    // Year 2 circles
+    var circles_year2 = this.g.selectAll("circle.year2")
+      .data(this.data);
+
+    circles_year2.exit().remove();
+    circles_year2.enter().append("circle")
+      .attr("r", 15);
+
+    circles_year2.transition().duration(200)
+      .attr("cx", (d, i) => this.x(d.values[year2]))
+      .attr("cy", (d, i) => this.y(i));
   };
 }
 
 
 whenDocumentLoaded(() => {
-  var years = [2001, 1950]
   var features = ['energy', 'danceability', 'valence', 'explicit', 'track_popularity']
   const data_in = "viz/data/year_averages_by_feature.json"
 
@@ -216,22 +222,29 @@ whenDocumentLoaded(() => {
       let plot = new PlotYearComparator(
 	'year_comparator',
 	data,
-	years,
 	features,
 	feature_names
       );
 
+      // --- What to do when sliders are changed -------------
+      plot.slider1.on("input", function() {
+	const year = this.value;
+	// Change text
+	d3.select("#text_year1").text(year);
+	// Change year 1 bubbles
+	plot.years[0] = year.toString();
+	plot.redrawBubbles();
+      })
+
+      plot.slider2.on("input", function() {
+	const year = this.value;
+	// Change text
+	d3.select("#text_year2").text(year);
+	// Change year 1 bubbles
+	plot.years[1] = year.toString();
+	plot.redrawBubbles();
+      })
+
     });
-
   });
-
-  // TODO
-  // Add the second year
-  // Need to space bubbles better -- can they be on several lines (some kind of wrapping?)
-  // or maybe just limit de amount of bubbles period.
-  // This will have to be reexamine the behaviour of the viz under stretching/compressing
-  // Add interactivity:
-  //   choose the bubbles
-  //   choose the features to show
-  //   show info on hover
 });
