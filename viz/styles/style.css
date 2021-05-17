@@ -97,50 +97,6 @@ svg {
   fill: none;
 }
 
-.slider_container {
-  width: 60%;
-  margin: auto;
-}
-
-/* Adapted from https://www.w3schools.com/howto/howto_js_rangeslider.asp */
-.slider {
-  width: 80%;
-  height: 25px;
-  background: #d303d3;
-  outline: none;
-  opacity: 0.7;
-  -webkit-transition: 0.2s;
-  transition: opacity 0.2s;
-}
-
-.slider:hover {
-  opacity: 1;
-}
-
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 25px;
-  height: 5px;
-  background: #04aa6d;
-  cursor: pointer;
-}
-
-.slider::-moz-range-thumb {
-  width: 5px;
-  height: 25px;
-  background: #04aa6d;
-  cursor: pointer;
-}
-
-#slider_year1 {
-  background: #69b3a2;
-}
-
-#slider_year2 {
-  background: #fe5c5c;
-}
-
 /* Should all circles be grouped together? */
 /* Only if all circles should share a property */
 .song_circle {
@@ -158,7 +114,63 @@ text.info {
 }
 
 /* For the bubble viz */
-/* Doesn't seem to do anything when I remove the attr in the js */
+.slider_container {
+  width: 60%;
+  margin: auto;
+}
+
+/* Adapted from https://www.w3schools.com/howto/howto_js_rangeslider.asp */
+.slider {
+  width: 80%;
+  height: 15px;
+  border-radius: 5px;
+  background: #ffffff;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb{
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%; 
+  background: #04aa6d;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  appearance: slider-horizontal;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%; 
+  background: #04aa6d;
+  cursor: pointer;
+}
+
+#slider_year1 {
+  background: #69b3a2;
+}
+
+#slider_year2 {
+  /* background: #7c2620; */
+  background: #fe5c5c;
+}
+
+text#text_year1 {
+  color: #69b3a2;
+}
+
+text#text_year2 {
+  color: #fe5c5c;
+}
+
 circle.year1 {
   fill: #69b3a2;
   stroke: black;
@@ -172,4 +184,11 @@ circle.year2 {
 text.feature_label {
   font-size: 18px;
   text-anchor: end;
+}
+
+line.y_line {
+  /* stroke:rgb(255,0,0); */
+  stroke-width: 1;
+  stroke: #000;
+  stroke-dasharray="5,5";
 }

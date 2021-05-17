@@ -9,7 +9,12 @@ function whenDocumentLoaded(action) {
 
 // Set the dimensions and margins of the graph
 // Should these be set elsewhere?
-const margin = {top: 30, right: 0, bottom: 0, left: 100};
+const margin = {
+  top: 30,
+  right: 0,
+  bottom: 30,
+  left: 200
+};
 
 // --- To select the right data ------------------
 function pick(obj, keys) {
@@ -22,6 +27,14 @@ function selectData(data, years, features) {
     "feature": r[0],
     "values" : Object.fromEntries(pick(r[1], years))
   }));
+}
+
+function range(start, end) {
+  return [...Array(end + 1).keys()].slice(start)
+}
+
+function translate(x, y) {
+  return "translate(" + x + ", " + y + ")"
 }
 
 // --- For when the viz is first started up ----------
@@ -37,14 +50,11 @@ class PlotYearComparator {
   constructor(
     svg_element_id,
     data,
-    years, // A list of exactly 2 years
     features, // A list with the features to plot
-    feature_names // A dict that translates feature names to proper English; does it have to be an input?
   ) {
 
     this.data_full = data;
     this.features = features;
-    this.feature_names = feature_names;
     this.years = ["1950", "2001"];
 
     // First the sliders
@@ -101,7 +111,6 @@ class PlotYearComparator {
       .range(this.xRange)
       .domain([0,1])
 
-    // This group contains all text+bubbles groups
     this.g = this.svg.append("g");
       // .attr("transform", "translate(40,0)");
 
@@ -119,20 +128,66 @@ class PlotYearComparator {
 
     var [year1, year2] = this.years;
 
-    // Add labels
-    this.y = d3.scaleBand()
-      .range(this.yRange)
-      .domain([...Array(this.features.length).keys()]);
+    // X axis
+    this.g.append("g")
+      .attr("transform", translate(0, this.yRange[0]))
+      .call(d3.axisBottom(this.x));
     
-    this.g.selectAll("text.feature_label")
+    // Y axis
+    this.y = d3.scalePoint()
+      .range(this.yRange)
+      .domain(this.features)
+      .padding([0.5]);
+
+    // let y_axis = this.g.append("g")
+      // .classed("y-axis", true)
+      // .attr("transform",
+	// "translate("
+	// + this.x(0)
+	// + ", "
+	// + 0
+	// + ")")
+      // .call(d3.axisLeft(this.y)
+	// .tickPadding([10])
+	// .tickSizeOuter([0])
+      // )
+      // .selectAll("text")
+	// .classed("feature_label", true)
+        // .style("text-anchor", "end");
+
+    // y_axis.append("g")
+      // .classed("y-gridlines", true)
+      // .append(
+      // .attr("transform",
+	// "translate("
+	// + this.x(0)
+	// + ", "
+	// + 0
+	// + ")")
+      
+    let y_lines = this.g.append("g")
+      .classed("y_line", true);
+
+    y_lines.selectAll("text.feature_label")
       .data(this.data)
       .enter()
       .append("text")
 	.classed("feature_label", true)
-        .attr("x", this.x(0))
-        .attr("dx", -20)
-	.attr("y", (d, i) => this.y(i))
-	.text(d => this.feature_names[d.feature]);
+	.attr("x", this.x(-0.01))
+	.attr("dx", -5)
+	.attr("y", d => this.y(d.feature))
+	.attr("dy", 3)
+	.text(d => d.feature);
+
+    y_lines.selectAll("line.y_line")
+      .data(this.data)
+      .enter()
+      .append("line")
+	.classed("y_line", true)
+        .attr("x1", this.x(-0.01))
+	.attr("x2", this.x(1))
+        .attr("y1", d => this.y(d.feature))
+	.attr("y2", d => this.y(d.feature));
 
     // Year 1 circles
     this.g.selectAll("circle.year1")
@@ -140,10 +195,9 @@ class PlotYearComparator {
       .enter()
       .append("circle")
 	.classed("year1", true)
-	// .attr("id", d => d.feature + "year1")
 	.attr("r", 15)
-	.attr("cx", (d, i) => this.x(d.values[year1]))
-	.attr("cy", (d, i) => this.y(i));
+	.attr("cx", d => this.x(d.values[year1]))
+	.attr("cy", d => this.y(d.feature));
 
     // Year 2 circles
     this.g.selectAll("circle.year2")
@@ -151,10 +205,9 @@ class PlotYearComparator {
       .enter()
       .append("circle")
 	.classed("year2", true)
-	// .attr("id", d => d.feature + "year1")
 	.attr("r", 15)
-	.attr("cx", (d, i) => this.x(d.values[year2]))
-	.attr("cy", (d, i) => this.y(i));
+	.attr("cx", d => this.x(d.values[year2]))
+	.attr("cy", d => this.y(d.feature));
   };
 
   redrawBubbles() {
@@ -167,20 +220,18 @@ class PlotYearComparator {
 
     var [year1, year2] = this.years;
 
-    // Recompute y axis in case
-    this.y = d3.scaleBand()
+    this.y = d3.scalePoint()
       .range(this.yRange)
-      .domain([...Array(this.features.length).keys()]);
-    
-    var feature_labels = this.g.selectAll("text.feature_label")
-      .data(this.data);
+      .domain(this.features)
+      .padding([0.5]);
 
-    feature_labels.exit().remove();
-    feature_labels.enter().append("text");
+    var y_axis = this.g.selectAll("g.y-axis")
 
-    feature_labels.transition().duration(200)
-      .attr("y", (d, i) => this.y(i))
-      .text(d => this.feature_names[d.feature]);
+    y_axis.call(d3.axisLeft(this.y))
+      .selectAll("text")
+	.classed("feature_label", true)
+        .style("text-anchor", "end")
+	.attr("dx", -20);
 
     // Year 1 circles
     var circles_year1 = this.g.selectAll("circle.year1")
@@ -191,8 +242,8 @@ class PlotYearComparator {
       .attr("r", 15);
 
     circles_year1.transition().duration(200)
-      .attr("cx", (d, i) => this.x(d.values[year1]))
-      .attr("cy", (d, i) => this.y(i));
+      .attr("cx", d => this.x(d.values[year1]))
+      .attr("cy", d => this.y(d.feature));
 
     // Year 2 circles
     var circles_year2 = this.g.selectAll("circle.year2")
@@ -203,47 +254,42 @@ class PlotYearComparator {
       .attr("r", 15);
 
     circles_year2.transition().duration(200)
-      .attr("cx", (d, i) => this.x(d.values[year2]))
-      .attr("cy", (d, i) => this.y(i));
+      .attr("cx", d => this.x(d.values[year2]))
+      .attr("cy", d => this.y(d.feature));
   };
 }
 
 
 whenDocumentLoaded(() => {
-  var features = ['energy', 'danceability', 'valence', 'explicit', 'track_popularity']
-  const data_in = "viz/data/year_averages_by_feature.json"
+  var features = [
+    'Energy',
+    'Danceability',
+    'Valence',
+    'Explicit',
+    'Track popularity'
+  ];
+  const data_in = "viz/data/year_averages_by_feature.json";
 
   d3.json(data_in, function(err, data){
-
-    // Putting the feature names in scope
-    d3.json("viz/data/features.json", function(err_, feature_names) {
-
-      let plot = new PlotYearComparator(
-	'year_comparator',
-	data,
-	features,
-	feature_names
-      );
+    let plot = new PlotYearComparator(
+      'year_comparator',
+      data,
+      features
+    );
 
       // --- What to do when sliders are changed -------------
-      plot.slider1.on("input", function() {
-	const year = this.value;
-	// Change text
-	d3.select("#text_year1").text(year);
-	// Change year 1 bubbles
-	plot.years[0] = year.toString();
-	plot.redrawBubbles();
-      })
+    plot.slider1.on("input", function() {
+      const year = this.value;
+      d3.select("#text_year1").text(year);
+      plot.years[0] = year.toString();
+      plot.redrawBubbles();
+    })
 
-      plot.slider2.on("input", function() {
-	const year = this.value;
-	// Change text
-	d3.select("#text_year2").text(year);
-	// Change year 1 bubbles
-	plot.years[1] = year.toString();
-	plot.redrawBubbles();
-      })
-
+    plot.slider2.on("input", function() {
+      const year = this.value;
+      d3.select("#text_year2").text(year);
+      plot.years[1] = year.toString();
+      plot.redrawBubbles();
     });
   });
 });
