@@ -45,20 +45,68 @@ function translate(x, y) {
   // return Math.floor((Math.random() * (b - a + 1)) + a)
 // }
 
+// Adapted from https://www.d3-graph-gallery.com/graph/interactivity_tooltip.html
+// create a tooltip
+var tooltip = d3.select("div#year_comparator_div")
+  .append("div")
+  .style("opacity", 0)
+  .attr("class", "tooltip")
+  // Change in css
+  .style("background-color", "white")
+  .style("border", "solid")
+  .style("border-width", "2px")
+  .style("border-radius", "5px")
+  .style("padding", "5px")
+
+// Three function that change the tooltip when user hover / move / leave a cell
+var mouseover = function(d) {
+  tooltip
+    .style("opacity", 1)
+    .html(d.feature)
+    // Don't know how to get the element's y position
+    // .style("left", "50%")
+    .style("left", d3.select(this).attr("x") + "px")
+    .style("width", "100px")
+    // .style("top", "50%");
+    .style("top", d3.select(this).attr("y") + "px")
+    // Modify the object you're hovering over
+  // d3.select(this)
+    // .style("stroke", "black")
+    // .style("opacity", 1)
+}
+// var mousemove = function(d) {
+  // tooltip
+    // // .html(d.feature)
+    // .html("helo")
+// }
+var mouseleave = function(d) {
+  tooltip
+    .style("opacity", 0)
+  // d3.select(this)
+    // .style("stroke", "none")
+    // .style("opacity", 0.8)
+}
+
 // --- Actual plot now ----------------------------
 class PlotYearComparator {
-  constructor(
-    svg_element_id,
-    data,
-    features, // A list with the features to plot
-  ) {
+  constructor(data, features) {
 
     this.data_full = data;
     this.features = features;
     this.years = ["1950", "2001"];
 
-    // First the sliders
-    const sliderDiv = d3.select(".slider_container");
+    // SVG canvas
+    // this.svg = d3.select('#' + svg_element_id);
+    this.svg = d3.select("div#year_comparator_div")
+      .append("svg")
+      .attr("id", "year_comparator")
+      .attr("viewBox", "0 0 800 500")
+      .attr("width", "90%")
+      .attr("height", "100%");
+    
+    // Sliders
+    const sliderDiv = d3.select("div#year_comparator_div")
+      .append("div.slider_container");
 
     // For year 1
     this.slider1 = sliderDiv.append("input")
@@ -88,10 +136,8 @@ class PlotYearComparator {
       .classed("sliderText", true)
       .attr("id", "text_year2")
       .text(this.years[1]);
-    
-    // The SVG canvas
-    this.svg = d3.select('#' + svg_element_id);
-    
+
+
     // --- Set scales -------------------------
     const [o_x, o_y, w, h] = this.svg.attr("viewBox")
       .split(' ')
@@ -142,28 +188,28 @@ class PlotYearComparator {
     // let y_axis = this.g.append("g")
       // .classed("y-axis", true)
       // .attr("transform",
-	// "translate("
-	// + this.x(0)
-	// + ", "
-	// + 0
-	// + ")")
+  // "translate("
+  // + this.x(0)
+  // + ", "
+  // + 0
+  // + ")")
       // .call(d3.axisLeft(this.y)
-	// .tickPadding([10])
-	// .tickSizeOuter([0])
+  // .tickPadding([10])
+  // .tickSizeOuter([0])
       // )
       // .selectAll("text")
-	// .classed("feature_label", true)
+  // .classed("feature_label", true)
         // .style("text-anchor", "end");
 
     // y_axis.append("g")
       // .classed("y-gridlines", true)
       // .append(
       // .attr("transform",
-	// "translate("
-	// + this.x(0)
-	// + ", "
-	// + 0
-	// + ")")
+  // "translate("
+  // + this.x(0)
+  // + ", "
+  // + 0
+  // + ")")
       
     let y_lines = this.g.append("g")
       .classed("y_line", true);
@@ -172,45 +218,54 @@ class PlotYearComparator {
       .data(this.data)
       .enter()
       .append("text")
-	.classed("feature_label", true)
-	.attr("x", this.x(-0.01))
-	.attr("dx", -5)
-	.attr("y", d => this.y(d.feature))
-	.attr("dy", 3)
-	.text(d => d.feature);
+      .classed("feature_label", true)
+      .style("text-anchor", "end")
+      .attr("x", this.x(-0.01))
+      .attr("dx", -9)
+      .attr("y", d => this.y(d.feature))
+      .attr("dy", 3)
+      .text(d => d.feature)
+      // .attr("tooltip-text", "hello")
+      .on("mouseover", mouseover)
+      .on("mouseleave", mouseleave);
+      // Replace by description
+      // .attr("data-title", d => d.feature);
 
     y_lines.selectAll("line.y_line")
       .data(this.data)
       .enter()
       .append("line")
-	.classed("y_line", true)
-        .attr("x1", this.x(-0.01))
-	.attr("x2", this.x(1))
-        .attr("y1", d => this.y(d.feature))
-	.attr("y2", d => this.y(d.feature));
+      .classed("y_line", true)
+      .attr("x1", this.x(-0.01))
+      .attr("x2", this.x(1))
+      .attr("y1", d => this.y(d.feature))
+      .attr("y2", d => this.y(d.feature));
 
     // Year 1 circles
     this.g.selectAll("circle.year1")
       .data(this.data)
       .enter()
       .append("circle")
-	.classed("year1", true)
-	.attr("r", 15)
-	.attr("cx", d => this.x(d.values[year1]))
-	.attr("cy", d => this.y(d.feature));
+      .classed("year1", true)
+      .attr("r", 15)
+      .attr("cx", d => this.x(d.values[year1]))
+      .attr("cy", d => this.y(d.feature));
+      // .on("mouseover", mouseover)
+      // .on("mouseleave", mouseleave);
+
 
     // Year 2 circles
     this.g.selectAll("circle.year2")
       .data(this.data)
       .enter()
       .append("circle")
-	.classed("year2", true)
-	.attr("r", 15)
-	.attr("cx", d => this.x(d.values[year2]))
-	.attr("cy", d => this.y(d.feature));
+      .classed("year2", true)
+      .attr("r", 15)
+      .attr("cx", d => this.x(d.values[year2]))
+      .attr("cy", d => this.y(d.feature));
   };
 
-  redrawBubbles() {
+  redraw() {
     // Pick the 2 years from the data, then filter to get only the desired features
     this.data = selectData(
       this.data_full,
@@ -229,9 +284,9 @@ class PlotYearComparator {
 
     y_axis.call(d3.axisLeft(this.y))
       .selectAll("text")
-	.classed("feature_label", true)
-        .style("text-anchor", "end")
-	.attr("dx", -20);
+      .classed("feature_label", true)
+      .style("text-anchor", "end")
+      .attr("dx", -20);
 
     // Year 1 circles
     var circles_year1 = this.g.selectAll("circle.year1")
@@ -271,25 +326,21 @@ whenDocumentLoaded(() => {
   const data_in = "viz/data/year_averages_by_feature.json";
 
   d3.json(data_in, function(err, data){
-    let plot = new PlotYearComparator(
-      'year_comparator',
-      data,
-      features
-    );
+    let plot = new PlotYearComparator(data, features);
 
-      // --- What to do when sliders are changed -------------
+    // --- What to do when sliders are changed -------------
     plot.slider1.on("input", function() {
       const year = this.value;
       d3.select("#text_year1").text(year);
       plot.years[0] = year.toString();
-      plot.redrawBubbles();
-    })
+      plot.redraw();
+    });
 
     plot.slider2.on("input", function() {
       const year = this.value;
       d3.select("#text_year2").text(year);
       plot.years[1] = year.toString();
-      plot.redrawBubbles();
+      plot.redraw();
     });
   });
 });
