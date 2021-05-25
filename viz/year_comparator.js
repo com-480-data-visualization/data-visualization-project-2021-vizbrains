@@ -106,7 +106,8 @@ class PlotYearComparator {
     
     // Sliders
     const sliderDiv = d3.select("div#year_comparator_div")
-      .append("div.slider_container");
+      .append("div")
+      .classed("slider_container", true);
 
     // For year 1
     this.slider1 = sliderDiv.append("input")
