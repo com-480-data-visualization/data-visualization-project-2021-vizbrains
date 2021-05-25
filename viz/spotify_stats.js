@@ -156,6 +156,14 @@ class StretchableTimeline {
                     // hide the circle
                     focus.select("#a" + d.id).attr('opacity', '0');
                     
+		    focus.append("iframe")
+		      .attr("src", "https://open.spotify.com/embed/track/" + d.id)
+		      .attr("width", "400")
+		      .attr("height", "84")
+		      .attr("frameborder", "1")
+		      .attr("allowtransparency", "true")
+		      .attr("allow", "encrypted-media");
+
                     // display a transparent rectangle to put song infos into
                     focus.append('rect')
                     .attr("class", "info")

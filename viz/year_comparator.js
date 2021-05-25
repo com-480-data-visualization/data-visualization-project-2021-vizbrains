@@ -7,11 +7,12 @@ function whenDocumentLoaded(action) {
   }
 }
 
+
 // Set the dimensions and margins of the graph
 // Should these be set elsewhere?
 const margin = {
   top: 30,
-  right: 0,
+  right: 30,
   bottom: 30,
   left: 200
 };
@@ -58,17 +59,37 @@ var tooltip = d3.select("div#year_comparator_div")
   .style("border-radius", "5px")
   .style("padding", "5px")
 
+const feature_descs = {
+  "Acousticness": "Whether the track is acoustic.",
+  "Artist followers": "Whether the artist has many followers on Spotify",
+  "Artist popularity": "How popular the artist is.",
+  "Duration": "The duration of the track in milliseconds.",
+  "Danceability": "Whether it is easy to dance according to the track.",
+  "Energy": "A perceptual measure of intensity and activity.",
+  "Explicit": "Whether swear words are used on the track.",
+  "Instrumentalness": "Whether a track contains no vocals.",
+  "Key": "The key the track is in.",
+  "Liveness": "Whether there is a live audience in the recording.",
+  "Loudness": "The overall loudness of a track.",
+  "Mode": "Indicates the modality (major or minor) of a track.",
+  "Speechiness": "Whether there are spoken words in a track.",
+  "Tempo": "The overall estimated tempo.",
+  "Time signature": "An estimated overall time signature of a track.",
+  "Track popularity": "How popular the track is.",
+  "Valence": "The musical positiveness conveyed by a track."
+};
+
 // Three function that change the tooltip when user hover / move / leave a cell
 var mouseover = function(d) {
   tooltip
     .style("opacity", 1)
-    .html(d.feature)
+    .html(feature_descs[d.feature])
     // Don't know how to get the element's y position
     // .style("left", "50%")
     .style("left", d3.select(this).attr("x") + "px")
-    .style("width", "100px")
+    .style("width", "500px")
     // .style("top", "50%");
-    .style("top", d3.select(this).attr("y") + "px")
+    .style("top", parseInt(d3.select(this).attr("y")) + 100 + "px")
     // Modify the object you're hovering over
   // d3.select(this)
     // .style("stroke", "black")
@@ -100,9 +121,13 @@ class PlotYearComparator {
     this.svg = d3.select("div#year_comparator_div")
       .append("svg")
       .attr("id", "year_comparator")
+      // .attr("viewBox", "0 0 800 500")
       .attr("viewBox", "0 0 800 500")
-      .attr("width", "90%")
-      .attr("height", "100%");
+      // .attr("width", "90%")
+      .attr("width", "95%")
+      .attr("height", "100%")
+      .style("margin-top", "0")
+      .style("margin-bottom", "0");
     
     // Sliders
     const sliderDiv = d3.select("div#year_comparator_div")
@@ -222,7 +247,7 @@ class PlotYearComparator {
       .classed("feature_label", true)
       .style("text-anchor", "end")
       .attr("x", this.x(-0.01))
-      .attr("dx", -9)
+      .attr("dx", -12)
       .attr("y", d => this.y(d.feature))
       .attr("dy", 3)
       .text(d => d.feature)
@@ -318,16 +343,23 @@ class PlotYearComparator {
 
 whenDocumentLoaded(() => {
   var features = [
-    'Energy',
-    'Danceability',
-    'Valence',
-    'Explicit',
-    'Track popularity'
+    "Track popularity",
+    "Explicit",
+    "Danceability",
+    "Energy",
+    // "Speechiness",
+    // "Acousticness",
+    // "Instrumentalness",
+    // "Liveness",
+    "Valence",
+    // "Artist popularity",
+    // "Artist followers"
   ];
+
   const data_in = "viz/data/year_averages_by_feature.json";
 
   d3.json(data_in, function(err, data){
-    let plot = new PlotYearComparator(data, features);
+      let plot = new PlotYearComparator(data, features);
 
     // --- What to do when sliders are changed -------------
     plot.slider1.on("input", function() {
