@@ -95,11 +95,6 @@ var mouseover = function(d) {
     .style("stroke", "black")
     // .style("opacity", 1)
 }
-// var mousemove = function(d) {
-  // tooltip
-    // // .html(d.feature)
-    // .html("helo")
-// }
 var mouseleave = function(d) {
   tooltip
     .style("opacity", 0)
@@ -281,8 +276,6 @@ class PlotYearComparator {
       .attr("r", 15)
       .attr("cx", d => this.x(d.values[year1]))
       .attr("cy", d => this.y(d.feature));
-      // .on("mouseover", mouseover)
-      // .on("mouseleave", mouseleave);
 
 
     // Year 2 circles
