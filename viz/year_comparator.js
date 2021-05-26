@@ -115,22 +115,9 @@ class PlotYearComparator {
     this.data_full = data;
     this.features = features;
     this.years = ["1950", "2001"];
-
-    // SVG canvas
-    // this.svg = d3.select('#' + svg_element_id);
-    this.svg = d3.select("div#year_comparator_div")
-      .append("svg")
-      .attr("id", "year_comparator")
-      // .attr("viewBox", "0 0 800 500")
-      .attr("viewBox", "0 0 800 500")
-      // .attr("width", "90%")
-      .attr("width", "95%")
-      .attr("height", "100%")
-      .style("margin-top", "0")
-      .style("margin-bottom", "0");
     
     // Sliders
-    const sliderDiv = d3.select("div#year_comparator_div")
+    var sliderDiv = d3.select("div#year_comparator_div")
       .append("div")
       .classed("slider_container", true);
 
@@ -165,6 +152,19 @@ class PlotYearComparator {
       .attr("id", "text_year2")
       .text(this.years[1]);
 
+
+    // SVG canvas
+    // this.svg = d3.select('#' + svg_element_id);
+    this.svg = d3.select("div#year_comparator_div")
+      .append("svg")
+      .attr("id", "year_comparator")
+      // .attr("viewBox", "0 0 800 500")
+      .attr("viewBox", "0 0 800 500")
+      // .attr("width", "90%")
+      .attr("width", "95%")
+      .attr("height", "100%")
+      .style("margin-top", "0")
+      .style("margin-bottom", "0");
 
     // --- Set scales -------------------------
     const [o_x, o_y, w, h] = this.svg.attr("viewBox")
@@ -204,6 +204,7 @@ class PlotYearComparator {
 
     // X axis
     this.g.append("g")
+      .attr("class", "axis axis--x")
       .attr("transform", translate(0, this.yRange[0]))
       .call(d3.axisBottom(this.x)
 	.tickFormat(d => d * 100 + "%")

@@ -19,11 +19,11 @@ class StretchableTimeline {
     this.svg = d3.select('#' + svg_element_id);
     
     var svg = this.svg,
-      margin = {top: 20, right: 20, bottom: 110, left: 40},
-      margin2 = {top: 430, right: 20, bottom: 30, left: 40},
+      margin = {top: 104, right: 20, bottom: 110, left: 40},
+      margin2 = {top: 524, right: 20, bottom: 30, left: 40},
       width = +1000 - margin.left - margin.right,
-      height = +500 - margin.top - margin.bottom,
-      height2 = +500 - margin2.top - margin2.bottom;
+      height = +600 - margin.top - margin.bottom,
+      height2 = +600 - margin2.top - margin2.bottom;
 
     const year_range = [d3.min(data_, d => d.year), d3.max(data_, d => d.year)];
 
@@ -51,34 +51,47 @@ class StretchableTimeline {
 
     var area = d3.area()
       .curve(d3.curveMonotoneX)
-      .x(function(d) { return x(d.year); })
+      .x(d => x(d.year))
       .y0(height)
-      .y1(function(d) { return y(d.track_popularity); });
+      .y1(d => y(d.track_popularity));
 
     var area2 = d3.area()
       .curve(d3.curveMonotoneX)
-      .x(function(d) { return x2(d.year); })
+      .x(d => x2(d.year))
       .y0(height2)
-      .y1(function(d) { return y2(d.track_popularity); });
+      .y1(d => y2(d.track_popularity));
 
     svg.append("defs").append("clipPath")
       .attr("id", "clip")
-    .append("rect")
+      .append("rect")
       .attr("width", width)
       .attr("height", height);
 
-    var context = svg.append("g")
-      .attr("class", "context")
-      .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
+    var foreign_object = svg.append('foreignObject')
+      .attr("width", "100%")
+      .attr("height", "80");
 
     var focus = svg.append("g")
       .attr("class", "focus")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      
+    var context = svg.append("g")
+      .attr("class", "context")
+      .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
-    x.domain(d3.extent(data_, function(d) { return d.year; }));
-    y.domain([0, d3.max(data_, function(d) { return d.track_popularity; })]);
+    x.domain(d3.extent(data_, d => d.year));
+    y.domain([0, d3.max(data_, d => d.track_popularity)]);
     x2.domain(x.domain());
     y2.domain(y.domain());
+
+    // Back in Black by default
+    foreign_object.append("xhtml:iframe")
+      .attr("src", "https://open.spotify.com/embed/track/08mG3Y1vljYA6bvDt4Wqkj")
+      .attr("width", "100%")
+      .attr("height", "80")
+      .attr("frameborder", "0")
+      .attr("allowtransparency", "true")
+      .attr("allow", "encrypted-media");
 
     focus.append("path")
       .datum(data_)
@@ -97,8 +110,8 @@ class StretchableTimeline {
     // text label for the y axis
     svg.append("text")
     .attr("transform", "rotate(-90)")
-    .attr("y", 0)
-    .attr("x", - (height / 2))
+    .attr("y", 15)
+    .attr("x", - (height / 2) - 80)
     .text("Popularity");
 
     context.append("path")
@@ -115,7 +128,7 @@ class StretchableTimeline {
     svg.append("text")             
       .attr("transform",
           "translate(" + (width/2) + " ," + 
-                        (margin2.top + margin .top + 60) + ")")
+                        (margin2.top + margin.top + 60) + ")")
       .style("text-anchor", "middle")
       .text("Year");
 
@@ -153,24 +166,21 @@ class StretchableTimeline {
                 .attr("id", d => "a"+d.id)
                 // When hovering on this song point
                 .on("mouseover", d => {
+                    // increase circle radius
+                    focus.select("#a" + d.id).attr('r', '35');
+
+                    /*
                     // hide the circle
                     focus.select("#a" + d.id).attr('opacity', '0');
                     
-		    focus.append("iframe")
-		      .attr("src", "https://open.spotify.com/embed/track/" + d.id)
-		      .attr("width", "400")
-		      .attr("height", "84")
-		      .attr("frameborder", "1")
-		      .attr("allowtransparency", "true")
-		      .attr("allow", "encrypted-media");
-
+                    var rect_width = Math.min(500, 15 * Math.max((d.name).length, (d.name).length));
                     // display a transparent rectangle to put song infos into
                     focus.append('rect')
                     .attr("class", "info")
                     .attr("id", "r"+d.id)
-                    .attr("width", 300)
+                    .attr("width", rect_width)
                     .attr("height", 80)
-                    .attr("x", Math.max(Math.min(x(d.year) - 150, width - 300), 0))
+                    .attr("x", Math.max(Math.min(x(d.year) - (rect_width/2), width - rect_width), 0))
                     .attr("y", y(d.track_popularity) - 20)
                     .attr("rx", 10)
                     .attr("rx", 10);
@@ -179,20 +189,32 @@ class StretchableTimeline {
                     focus.append('text')
                     .attr("class", "info")
                     .text(d.name)
-                    .attr("x", Math.max(Math.min(x(d.year), width - 150), 150))
+                    .attr("x", Math.max(Math.min(x(d.year), width - (rect_width/2)), (rect_width/2)))
                     .attr("y", y(d.track_popularity) +10);
 
                     // song artist
                     focus.append('text')
                     .attr("class", "info")
                     .text(d.artists.slice(1, -1).split(',')[0].slice(1, -1))
-                    .attr("x", Math.max(Math.min(x(d.year), width - 150), 150))
+                    .attr("x", Math.max(Math.min(x(d.year), width - (rect_width/2)), (rect_width/2)))
                     .attr("y", y(d.track_popularity) + 40);
+                    */
+      
+                    foreign_object.selectAll("iframe").remove();
+
+                    foreign_object.append("xhtml:iframe")
+                    .attr("src", "https://open.spotify.com/embed/track/" + d.id)
+                    .attr("width", "100%")
+                    .attr("height", "80")
+                    .attr("frameborder", "0")
+                    .attr("allowtransparency", "true")
+                    .attr("allow", "encrypted-media");
                 })
-                // When putting cursor away from this point, remove infos and show the circle
+                // When putting cursor away from this point, decrease circle radius back to its normal size
                 .on("mouseout", d => {
-                    focus.select("#a" + d.id).attr('opacity', '1');
-                    focus.selectAll(".info").remove();
+                    focus.select("#a" + d.id).attr('r', '20');
+                    //focus.select("#a" + d.id).attr('opacity', '1');
+                    //focus.selectAll(".info").remove();
                 });
 
             // Add circles
