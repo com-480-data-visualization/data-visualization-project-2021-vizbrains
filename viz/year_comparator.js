@@ -64,8 +64,8 @@ const feature_descs = {
   "Artist followers": "Whether the artist has many followers on Spotify",
   "Artist popularity": "How popular the artist is.",
   "Duration": "The duration of the track in milliseconds.",
-  "Danceability": "Whether it is easy to dance according to the track.",
-  "Energy": "A perceptual measure of intensity and activity.",
+  "Danceability": "Whether it is easy to dance along to the track.",
+  "Energy": "A perceptual measure of intensity in the track.",
   "Explicit": "Whether swear words are used on the track.",
   "Instrumentalness": "Whether a track contains no vocals.",
   "Key": "The key the track is in.",
@@ -86,13 +86,13 @@ var mouseover = function(d) {
     .html(feature_descs[d.feature])
     // Don't know how to get the element's y position
     // .style("left", "50%")
-    .style("left", d3.select(this).attr("x") + "px")
+    .style("left", parseInt(d3.select(this).attr("x")) + 100 + "px")
     .style("width", "500px")
     // .style("top", "50%");
-    .style("top", parseInt(d3.select(this).attr("y")) + 100 + "px")
+    .style("top", parseInt(d3.select(this).attr("y")) + 50 + "px")
     // Modify the object you're hovering over
-  // d3.select(this)
-    // .style("stroke", "black")
+  d3.select(this)
+    .style("stroke", "black")
     // .style("opacity", 1)
 }
 // var mousemove = function(d) {
@@ -103,8 +103,8 @@ var mouseover = function(d) {
 var mouseleave = function(d) {
   tooltip
     .style("opacity", 0)
-  // d3.select(this)
-    // .style("stroke", "none")
+  d3.select(this)
+    .style("stroke", "none")
     // .style("opacity", 0.8)
 }
 
@@ -140,7 +140,8 @@ class PlotYearComparator {
       .attr("id", "slider_year1")
       .attr("type", "range")
       .attr("min", "1922")
-      .attr("max", "2021");
+      .attr("max", "2021")
+      .attr("value", this.years[0]);
 
     // Show the year on the side
     sliderDiv.append("text")
@@ -155,7 +156,8 @@ class PlotYearComparator {
       .attr("id", "slider_year2")
       .attr("type", "range")
       .attr("min", "1922")
-      .attr("max", "2021");
+      .attr("max", "2021")
+      .attr("value", this.years[1]);
 
     // Show the year on the side
     sliderDiv.append("text")
@@ -203,7 +205,9 @@ class PlotYearComparator {
     // X axis
     this.g.append("g")
       .attr("transform", translate(0, this.yRange[0]))
-      .call(d3.axisBottom(this.x));
+      .call(d3.axisBottom(this.x)
+	.tickFormat(d => d * 100 + "%")
+      );
     
     // Y axis
     this.y = d3.scalePoint()
@@ -347,13 +351,13 @@ whenDocumentLoaded(() => {
     "Explicit",
     "Danceability",
     "Energy",
-    // "Speechiness",
-    // "Acousticness",
-    // "Instrumentalness",
-    // "Liveness",
+    "Speechiness",
+    "Acousticness",
+    "Instrumentalness",
+    "Liveness",
     "Valence",
-    // "Artist popularity",
-    // "Artist followers"
+    "Artist popularity",
+    "Artist followers"
   ];
 
   const data_in = "viz/data/year_averages_by_feature.json";
