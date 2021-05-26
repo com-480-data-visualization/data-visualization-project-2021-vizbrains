@@ -7,7 +7,7 @@
   <title>Data Visualization Project - Spotify</title>
   <meta name="author" content="vizBrains team">
 
-  <link rel="stylesheet" href="viz/styles/style.css">
+  <link type="text/css" rel="stylesheet" href="viz/styles/style.css">
 </head>
 <body>
   <div class="topnav">
@@ -24,20 +24,26 @@
       <p>
         A REMPLACER For the final milestone, you need to create a cool, interactive, and sufficiently complex D3.js (and other) data viz on the dataset you chose. Tell a data story and explain it to the targeted audience. Create a process book that details how you got there, from the original idea to the final product.
       </p>
-      <svg id="timeline" viewBox="0 0 1000 600" width ="90%" height="100%"></svg>
+      <svg id="timeline" viewBox="0 0 1000 600" width ="60%" height="100%"></svg>
     </div>
 
     <div id="year_comparator_div">
       <h2 class="title">Year Comparator</h2>
 	<p>
-	  Was music more happy in the 1950s or in the 2000s? Was it more easier to find music to dance on in the 1930s or in the 1980s?
-	  In this next visualisation, you can compare 2 years based on a number of attributes.
+	  Was music more happy in the 1950s or in the 2000s? Was it easier to find music to dance on in the 1930s or in the 1980s?
+	  In this next visualisation, you can find out exactly this!
 	  <br>
 	  Hover over the attribute names to get a short description of what they measure, and change the years dynamically using the 2 sliders below.
 	  <br>
 	  If needed, you can find more information on the features <a href="https://developer.spotify.com/documentation/web-api/reference/#object-audiofeaturesobject">here</a>
 	</p>
       <!-- <svg id="year_comparator" viewBox="0 0 800 500" width ="90%" height="100%"></svg> -->
+	<p>
+	  It seems like music only get explicit very recently. Is that surprising to you?
+	  <br>
+	  Also, do you see how similar 1987 and 2008 look, even though there are 20 years apart?
+	  Perhaps by using all the features we could gather a better picture, but the graph would be more crowded.
+	</p>
     </div>
 
     <div>

@@ -87,8 +87,10 @@ class StretchableTimeline {
     // Back in Black by default
     foreign_object.append("xhtml:iframe")
       .attr("src", "https://open.spotify.com/embed/track/08mG3Y1vljYA6bvDt4Wqkj")
-      .attr("width", "100%")
+      .attr("width", "40%")
       .attr("height", "80")
+      .style("margin", "auto")
+      .style("display", "block")
       .attr("frameborder", "0")
       .attr("allowtransparency", "true")
       .attr("allow", "encrypted-media");
@@ -204,8 +206,10 @@ class StretchableTimeline {
 
                     foreign_object.append("xhtml:iframe")
                     .attr("src", "https://open.spotify.com/embed/track/" + d.id)
-                    .attr("width", "100%")
-                    .attr("height", "80")
+		    .attr("width", "40%")
+		    .attr("height", "80")
+		    .style("margin", "auto")
+		    .style("display", "block")
                     .attr("frameborder", "0")
                     .attr("allowtransparency", "true")
                     .attr("allow", "encrypted-media");

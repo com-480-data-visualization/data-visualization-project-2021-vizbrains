@@ -46,18 +46,6 @@ function translate(x, y) {
   // return Math.floor((Math.random() * (b - a + 1)) + a)
 // }
 
-// Adapted from https://www.d3-graph-gallery.com/graph/interactivity_tooltip.html
-// create a tooltip
-var tooltip = d3.select("div#year_comparator_div")
-  .append("div")
-  .style("opacity", 0)
-  .attr("class", "tooltip")
-  // Change in css
-  .style("background-color", "white")
-  .style("border", "solid")
-  .style("border-width", "2px")
-  .style("border-radius", "5px")
-  .style("padding", "5px")
 
 const feature_descs = {
   "Acousticness": "Whether the track is acoustic.",
@@ -79,7 +67,19 @@ const feature_descs = {
   "Valence": "The musical positiveness conveyed by a track."
 };
 
-// Three function that change the tooltip when user hover / move / leave a cell
+// Adapted from https://www.d3-graph-gallery.com/graph/interactivity_tooltip.html
+// create a tooltip
+var tooltip = d3.select("div#year_comparator_div")
+  .append("div")
+  .style("opacity", 0)
+  .attr("class", "tooltip")
+  // Change in css
+  .style("background-color", "#110e0e")
+  .style("border", "solid")
+  .style("border-width", "2px")
+  .style("border-radius", "5px")
+  .style("padding", "5px")
+
 var mouseover = function(d) {
   tooltip
     .style("opacity", 1)
@@ -87,7 +87,7 @@ var mouseover = function(d) {
     // Don't know how to get the element's y position
     // .style("left", "50%")
     .style("left", parseInt(d3.select(this).attr("x")) + 100 + "px")
-    .style("width", "500px")
+    .style("width", "300px")
     // .style("top", "50%");
     .style("top", parseInt(d3.select(this).attr("y")) + 50 + "px")
     // Modify the object you're hovering over
@@ -161,7 +161,7 @@ class PlotYearComparator {
       // .attr("viewBox", "0 0 800 500")
       .attr("viewBox", "0 0 800 500")
       // .attr("width", "90%")
-      .attr("width", "95%")
+      .attr("width", "60%")
       .attr("height", "100%")
       .style("margin-top", "0")
       .style("margin-bottom", "0");
@@ -348,17 +348,17 @@ class PlotYearComparator {
 
 whenDocumentLoaded(() => {
   var features = [
-    "Track popularity",
+    // "Track popularity",
     "Explicit",
-    "Danceability",
+    // "Danceability",
     "Energy",
-    "Speechiness",
-    "Acousticness",
+    // "Speechiness",
+    "Acousticness", //good
     "Instrumentalness",
-    "Liveness",
-    "Valence",
+    // "Liveness",
+    // "Valence",
     "Artist popularity",
-    "Artist followers"
+    // "Artist followers"
   ];
 
   const data_in = "viz/data/year_averages_by_feature.json";
