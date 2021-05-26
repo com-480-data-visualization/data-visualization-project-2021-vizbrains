@@ -45,6 +45,43 @@ function translate(x, y) {
   // return Math.floor((Math.random() * (b - a + 1)) + a)
 // }
 
+// Adapted from https://www.d3-graph-gallery.com/graph/interactivity_tooltip.html
+// create a tooltip
+var tooltip = d3.select("div#year_comparator_div")
+  .append("div")
+  .style("opacity", 0)
+  .attr("class", "tooltip")
+  // Change in css
+  .style("background-color", "white")
+  .style("border", "solid")
+  .style("border-width", "2px")
+  .style("border-radius", "5px")
+  .style("padding", "5px")
+
+// Three function that change the tooltip when user hover / move / leave a cell
+var mouseover = function(d) {
+  tooltip
+    .style("opacity", 1)
+    .html(d)
+  // d3.select(this)
+    // .style("stroke", "black")
+    // .style("opacity", 1)
+}
+// var mousemove = function(d) {
+  // tooltip
+    // // .html(d.feature)
+    // .html("helo")
+    // .style("left", (d3.mouse(this)[0]+70) + "px")
+    // .style("top", (d3.mouse(this)[1]) + "px")
+// }
+var mouseleave = function(d) {
+  tooltip
+    .style("opacity", 0)
+  // d3.select(this)
+    // .style("stroke", "none")
+    // .style("opacity", 0.8)
+}
+
 // --- Actual plot now ----------------------------
 class PlotYearComparator {
   constructor(
@@ -88,7 +125,8 @@ class PlotYearComparator {
       .classed("sliderText", true)
       .attr("id", "text_year2")
       .text(this.years[1]);
-    
+
+
     // The SVG canvas
     this.svg = d3.select('#' + svg_element_id);
     
@@ -174,10 +212,14 @@ class PlotYearComparator {
       .append("text")
 	.classed("feature_label", true)
 	.attr("x", this.x(-0.01))
-	.attr("dx", -5)
+	.attr("dx", -9)
 	.attr("y", d => this.y(d.feature))
 	.attr("dy", 3)
-	.text(d => d.feature);
+	.text(d => d.feature)
+      .on("mouseover", mouseover)
+      .on("mouseleave", mouseleave);
+        // Replace by description
+        // .attr("data-title", d => d.feature);
 
     y_lines.selectAll("line.y_line")
       .data(this.data)
@@ -197,7 +239,10 @@ class PlotYearComparator {
 	.classed("year1", true)
 	.attr("r", 15)
 	.attr("cx", d => this.x(d.values[year1]))
-	.attr("cy", d => this.y(d.feature));
+	.attr("cy", d => this.y(d.feature))
+      .on("mouseover", mouseover)
+      .on("mouseleave", mouseleave);
+
 
     // Year 2 circles
     this.g.selectAll("circle.year2")
