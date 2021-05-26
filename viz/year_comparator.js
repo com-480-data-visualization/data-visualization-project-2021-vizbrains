@@ -7,11 +7,12 @@ function whenDocumentLoaded(action) {
   }
 }
 
+
 // Set the dimensions and margins of the graph
 // Should these be set elsewhere?
 const margin = {
   top: 30,
-  right: 0,
+  right: 30,
   bottom: 30,
   left: 200
 };
@@ -58,44 +59,62 @@ var tooltip = d3.select("div#year_comparator_div")
   .style("border-radius", "5px")
   .style("padding", "5px")
 
+const feature_descs = {
+  "Acousticness": "Whether the track is acoustic.",
+  "Artist followers": "Whether the artist has many followers on Spotify",
+  "Artist popularity": "How popular the artist is.",
+  "Duration": "The duration of the track in milliseconds.",
+  "Danceability": "Whether it is easy to dance along to the track.",
+  "Energy": "A perceptual measure of intensity in the track.",
+  "Explicit": "Whether swear words are used on the track.",
+  "Instrumentalness": "Whether a track contains no vocals.",
+  "Key": "The key the track is in.",
+  "Liveness": "Whether there is a live audience in the recording.",
+  "Loudness": "The overall loudness of a track.",
+  "Mode": "Indicates the modality (major or minor) of a track.",
+  "Speechiness": "Whether there are spoken words in a track.",
+  "Tempo": "The overall estimated tempo.",
+  "Time signature": "An estimated overall time signature of a track.",
+  "Track popularity": "How popular the track is.",
+  "Valence": "The musical positiveness conveyed by a track."
+};
+
 // Three function that change the tooltip when user hover / move / leave a cell
 var mouseover = function(d) {
   tooltip
     .style("opacity", 1)
-    .html(d)
-  // d3.select(this)
-    // .style("stroke", "black")
+    .html(feature_descs[d.feature])
+    // Don't know how to get the element's y position
+    // .style("left", "50%")
+    .style("left", parseInt(d3.select(this).attr("x")) + 100 + "px")
+    .style("width", "500px")
+    // .style("top", "50%");
+    .style("top", parseInt(d3.select(this).attr("y")) + 50 + "px")
+    // Modify the object you're hovering over
+  d3.select(this)
+    .style("stroke", "black")
     // .style("opacity", 1)
 }
-// var mousemove = function(d) {
-  // tooltip
-    // // .html(d.feature)
-    // .html("helo")
-    // .style("left", (d3.mouse(this)[0]+70) + "px")
-    // .style("top", (d3.mouse(this)[1]) + "px")
-// }
 var mouseleave = function(d) {
   tooltip
     .style("opacity", 0)
-  // d3.select(this)
-    // .style("stroke", "none")
+  d3.select(this)
+    .style("stroke", "none")
     // .style("opacity", 0.8)
 }
 
 // --- Actual plot now ----------------------------
 class PlotYearComparator {
-  constructor(
-    svg_element_id,
-    data,
-    features, // A list with the features to plot
-  ) {
+  constructor(data, features) {
 
     this.data_full = data;
     this.features = features;
     this.years = ["1950", "2001"];
-
-    // First the sliders
-    const sliderDiv = d3.select(".slider_container");
+    
+    // Sliders
+    var sliderDiv = d3.select("div#year_comparator_div")
+      .append("div")
+      .classed("slider_container", true);
 
     // For year 1
     this.slider1 = sliderDiv.append("input")
@@ -103,7 +122,8 @@ class PlotYearComparator {
       .attr("id", "slider_year1")
       .attr("type", "range")
       .attr("min", "1922")
-      .attr("max", "2021");
+      .attr("max", "2021")
+      .attr("value", this.years[0]);
 
     // Show the year on the side
     sliderDiv.append("text")
@@ -118,7 +138,8 @@ class PlotYearComparator {
       .attr("id", "slider_year2")
       .attr("type", "range")
       .attr("min", "1922")
-      .attr("max", "2021");
+      .attr("max", "2021")
+      .attr("value", this.years[1]);
 
     // Show the year on the side
     sliderDiv.append("text")
@@ -127,9 +148,19 @@ class PlotYearComparator {
       .text(this.years[1]);
 
 
-    // The SVG canvas
-    this.svg = d3.select('#' + svg_element_id);
-    
+    // SVG canvas
+    // this.svg = d3.select('#' + svg_element_id);
+    this.svg = d3.select("div#year_comparator_div")
+      .append("svg")
+      .attr("id", "year_comparator")
+      // .attr("viewBox", "0 0 800 500")
+      .attr("viewBox", "0 0 800 500")
+      // .attr("width", "90%")
+      .attr("width", "95%")
+      .attr("height", "100%")
+      .style("margin-top", "0")
+      .style("margin-bottom", "0");
+
     // --- Set scales -------------------------
     const [o_x, o_y, w, h] = this.svg.attr("viewBox")
       .split(' ')
@@ -168,8 +199,11 @@ class PlotYearComparator {
 
     // X axis
     this.g.append("g")
+      .attr("class", "axis axis--x")
       .attr("transform", translate(0, this.yRange[0]))
-      .call(d3.axisBottom(this.x));
+      .call(d3.axisBottom(this.x)
+	.tickFormat(d => d * 100 + "%")
+      );
     
     // Y axis
     this.y = d3.scalePoint()
@@ -180,28 +214,28 @@ class PlotYearComparator {
     // let y_axis = this.g.append("g")
       // .classed("y-axis", true)
       // .attr("transform",
-	// "translate("
-	// + this.x(0)
-	// + ", "
-	// + 0
-	// + ")")
+  // "translate("
+  // + this.x(0)
+  // + ", "
+  // + 0
+  // + ")")
       // .call(d3.axisLeft(this.y)
-	// .tickPadding([10])
-	// .tickSizeOuter([0])
+  // .tickPadding([10])
+  // .tickSizeOuter([0])
       // )
       // .selectAll("text")
-	// .classed("feature_label", true)
+  // .classed("feature_label", true)
         // .style("text-anchor", "end");
 
     // y_axis.append("g")
       // .classed("y-gridlines", true)
       // .append(
       // .attr("transform",
-	// "translate("
-	// + this.x(0)
-	// + ", "
-	// + 0
-	// + ")")
+  // "translate("
+  // + this.x(0)
+  // + ", "
+  // + 0
+  // + ")")
       
     let y_lines = this.g.append("g")
       .classed("y_line", true);
@@ -210,38 +244,38 @@ class PlotYearComparator {
       .data(this.data)
       .enter()
       .append("text")
-	.classed("feature_label", true)
-	.attr("x", this.x(-0.01))
-	.attr("dx", -9)
-	.attr("y", d => this.y(d.feature))
-	.attr("dy", 3)
-	.text(d => d.feature)
+      .classed("feature_label", true)
+      .style("text-anchor", "end")
+      .attr("x", this.x(-0.01))
+      .attr("dx", -12)
+      .attr("y", d => this.y(d.feature))
+      .attr("dy", 3)
+      .text(d => d.feature)
+      // .attr("tooltip-text", "hello")
       .on("mouseover", mouseover)
       .on("mouseleave", mouseleave);
-        // Replace by description
-        // .attr("data-title", d => d.feature);
+      // Replace by description
+      // .attr("data-title", d => d.feature);
 
     y_lines.selectAll("line.y_line")
       .data(this.data)
       .enter()
       .append("line")
-	.classed("y_line", true)
-        .attr("x1", this.x(-0.01))
-	.attr("x2", this.x(1))
-        .attr("y1", d => this.y(d.feature))
-	.attr("y2", d => this.y(d.feature));
+      .classed("y_line", true)
+      .attr("x1", this.x(-0.01))
+      .attr("x2", this.x(1))
+      .attr("y1", d => this.y(d.feature))
+      .attr("y2", d => this.y(d.feature));
 
     // Year 1 circles
     this.g.selectAll("circle.year1")
       .data(this.data)
       .enter()
       .append("circle")
-	.classed("year1", true)
-	.attr("r", 15)
-	.attr("cx", d => this.x(d.values[year1]))
-	.attr("cy", d => this.y(d.feature))
-      .on("mouseover", mouseover)
-      .on("mouseleave", mouseleave);
+      .classed("year1", true)
+      .attr("r", 15)
+      .attr("cx", d => this.x(d.values[year1]))
+      .attr("cy", d => this.y(d.feature));
 
 
     // Year 2 circles
@@ -249,13 +283,13 @@ class PlotYearComparator {
       .data(this.data)
       .enter()
       .append("circle")
-	.classed("year2", true)
-	.attr("r", 15)
-	.attr("cx", d => this.x(d.values[year2]))
-	.attr("cy", d => this.y(d.feature));
+      .classed("year2", true)
+      .attr("r", 15)
+      .attr("cx", d => this.x(d.values[year2]))
+      .attr("cy", d => this.y(d.feature));
   };
 
-  redrawBubbles() {
+  redraw() {
     // Pick the 2 years from the data, then filter to get only the desired features
     this.data = selectData(
       this.data_full,
@@ -274,9 +308,9 @@ class PlotYearComparator {
 
     y_axis.call(d3.axisLeft(this.y))
       .selectAll("text")
-	.classed("feature_label", true)
-        .style("text-anchor", "end")
-	.attr("dx", -20);
+      .classed("feature_label", true)
+      .style("text-anchor", "end")
+      .attr("dx", -20);
 
     // Year 1 circles
     var circles_year1 = this.g.selectAll("circle.year1")
@@ -307,34 +341,37 @@ class PlotYearComparator {
 
 whenDocumentLoaded(() => {
   var features = [
-    'Energy',
-    'Danceability',
-    'Valence',
-    'Explicit',
-    'Track popularity'
+    "Track popularity",
+    "Explicit",
+    "Danceability",
+    "Energy",
+    "Speechiness",
+    "Acousticness",
+    "Instrumentalness",
+    "Liveness",
+    "Valence",
+    "Artist popularity",
+    "Artist followers"
   ];
+
   const data_in = "viz/data/year_averages_by_feature.json";
 
   d3.json(data_in, function(err, data){
-    let plot = new PlotYearComparator(
-      'year_comparator',
-      data,
-      features
-    );
+      let plot = new PlotYearComparator(data, features);
 
-      // --- What to do when sliders are changed -------------
+    // --- What to do when sliders are changed -------------
     plot.slider1.on("input", function() {
       const year = this.value;
       d3.select("#text_year1").text(year);
       plot.years[0] = year.toString();
-      plot.redrawBubbles();
-    })
+      plot.redraw();
+    });
 
     plot.slider2.on("input", function() {
       const year = this.value;
       d3.select("#text_year2").text(year);
       plot.years[1] = year.toString();
-      plot.redrawBubbles();
+      plot.redraw();
     });
   });
 });

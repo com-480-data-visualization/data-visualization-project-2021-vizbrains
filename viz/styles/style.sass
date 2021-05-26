@@ -159,21 +159,25 @@ line.y_line
   display: block
   opacity: 0
   pointer-events: none
-  position: absolute
 
 /* setup tooltips */
 .tooltip
   position: relative
+  background-color: white
+  border: solid
+  border-width: 2px
+  border-radius: 5px
+  padding: 5px
 
   &:before
     @include tooltip_general
-    background: rgba(0,0,0,.75)
+    background: rgba(60,60,60,1)
     border-radius: 2px
-    color: #fff
-    content: attr(data-title)
+    color: #444
+    // content: attr(data-title)
     font-size: 14px
     padding: 6px 10px
-    top: 26px
+    // top: 26px
     white-space: nowrap
 
   &:after
@@ -182,10 +186,6 @@ line.y_line
     border-bottom: 6px solid rgba(0,0,0,0.75) 
     border-left: 6px solid transparent
     content: ''
-    height: 0
-      top: 20px
-      left: 20px
-    width: 0
 
 
 /* expand */

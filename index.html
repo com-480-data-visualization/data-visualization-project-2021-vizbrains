@@ -12,16 +12,50 @@
 <body>
   <div class="topnav">
     <ul>
-      <h1>Music Trends</h3>
-      <a class="active" href="#about">About</a>
+      <a href="index.html"><h1>Music Trends</h1></a>
+      <a href="about.html">About</a>
+      <a href="https://github.com/com-480-data-visualization/data-visualization-project-2021-vizbrains">Our repository</a>
     </ul>
   </div>
+
   <div>
-    <svg id="timeline" viewBox="0 0 1000 500" width ="90%" height="100%"></svg>
-    <div id="year_comparator_div">
-      <svg id="year_comparator" viewBox="0 0 800 500" width ="90%" height="100%"></svg>
-      <div class="slider_container"></div>
+    <div>
+      <h2 class="title">Timeline</h2>
+      <p>
+        Since the 1920s, music changed dramatically. The 20th century is actually described as the “age of musical diversity”. Nowadays the streaming platforms dominate the industry, and allow us to bring together all these musical works.
+        <br><br>
+        So what were the most popular songs through the years and how actually popular were they ? On the timeline below, we selected for each year the most popular song according to Spotify statistics.
+        <br><br>
+        Feel free to navigate on the timeline and listen to the samples.
+        <br>
+        • Scroll on the graph to zoom in or out. The more you zoom in, the more years will be visible.
+        <br>
+        • Navigate through the timeline with the horizontal scroll bar, or by dragging the cursor directly on the graph.
+        <br><br>
+      </p>
+      <svg id="timeline" viewBox="0 0 1000 600" width ="90%" height="100%"></svg>
     </div>
+
+    <div id="year_comparator_div">
+      <h2 class="title">Year Comparator</h2>
+	<p>
+	  Was music more happy in the 1950s or in the 2000s? Was it more easier to find music to dance on in the 1930s or in the 1980s?
+	  In this next visualisation, you can compare 2 years based on several attributes.
+	  <br>
+	  Hover over the attribute names to get a short description of what they measure, and change the years dynamically using the 2 sliders below.
+	  <br>
+	  If needed, you can find more information on the features <a href="https://developer.spotify.com/documentation/web-api/reference/#object-audiofeaturesobject">here</a>
+	</p>
+      <!-- <svg id="year_comparator" viewBox="0 0 800 500" width ="90%" height="100%"></svg> -->
+    </div>
+
+    <div>
+      <h2 class="title">3rd Visu</h2>
+      <p>
+        A REMPLACER For the final milestone, you need to create a cool, interactive, and sufficiently complex D3.js (and other) data viz on the dataset you chose. Tell a data story and explain it to the targeted audience. Create a process book that details how you got there, from the original idea to the final product.
+      </p>
+    </div>
+
   </div>
 
   <!-- <iframe src="https://open.spotify.com/embed/track/0yg93GXlS0ZmLsFpXG5bT2" width="400" height="84" frameborder="1" allowtransparency="true" allow="encrypted-media"></iframe> -->
@@ -29,7 +63,7 @@
   <!-- <iframe src="https://open.spotify.com/embed/playlist/1Undj2a5HbMk7jbFgPP43I" width="400" height="300" frameborder="1" allowtransparency="true" allow="encrypted-media"></iframe> -->
 
   <script src="https://d3js.org/d3.v4.min.js"></script>
-  <script src="viz/spotify_stats.js"></script>
+  <script src="viz/timeline.js"></script>
   <script src="viz/year_comparator.js"></script>
 </body>
 </html>
