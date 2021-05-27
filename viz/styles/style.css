@@ -73,6 +73,10 @@ p {
   color: white;
 }
 
+a {
+  color: #24aeb2;
+}
+
 .title {
   position: -webkit-sticky; /* Required for Safari */
   position: sticky;
@@ -141,13 +145,13 @@ text.info {
 
 /* For the bubble viz */
 .slider_container {
-  width: 80%;
+  width: 40%;
   margin: auto;
 }
 
 /* Adapted from https://www.w3schools.com/howto/howto_js_rangeslider.asp */
 .slider {
-  width: 80%;
+  width: 85%;
   height: 15px;
   border-radius: 5px;
   background: #ffffff;
@@ -156,40 +160,48 @@ text.info {
   -webkit-transition: 0.2s;
   transition: opacity 0.2s;
 }
-.slider:hover, .slider.tooltip.expand:hover:after, .slider.tooltip.expand:hover:before {
+
+.slider:hover {
   opacity: 1;
 }
-
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 15px;
   height: 15px;
-  border-radius: 50%;
-  background: #04aa6d;
+  border-radius: 80%;
   cursor: pointer;
 }
-
 .slider::-moz-range-thumb {
   appearance: slider-horizontal;
   width: 15px;
   height: 15px;
-  border-radius: 50%;
-  background: #04aa6d;
+  border-radius: 80%;
   cursor: pointer;
 }
 
 #slider_year1 {
-  background: var(--spotifyGreen);
+  background: #1ea03c;
+}
+#slider_year1::-webkit-slider-thumb {
+  background: #26563d;
+}
+#slider_year1::-moz-slider-thumb {
+  background: #ffffff;
 }
 
 #slider_year2 {
-  /* background: #7c2620 */
   background: #fe5c5c;
+}
+#slider_year2::-webkit-slider-thumb {
+  background: #720000;
+}
+#slider_year2::-moz-slider-thumb {
+  background: #720000;
 }
 
 text#text_year1 {
-  color: var(--spotifyGreen);
+  color: #1ea03c;
 }
 
 text#text_year2 {
@@ -197,7 +209,7 @@ text#text_year2 {
 }
 
 circle.year1 {
-  fill: var(--spotifyGreen);
+  fill: #1ea03c;
 }
 
 circle.year2 {
@@ -207,12 +219,18 @@ circle.year2 {
 line.y_line {
   /* stroke:rgb(255,0,0) */
   stroke-width: 1;
-  stroke: var(--textColor);
+  stroke: #000;
 }
 
 /* setup tooltips */
+/*
 .tooltip {
   position: relative;
+  background-color: #110e0e;
+  border: solid;
+  border-width: 2px;
+  border-radius: 5px;
+  padding: 5px;
 }
 .tooltip:before {
   display: block;
@@ -234,34 +252,18 @@ line.y_line {
   border-left: 6px solid transparent;
   content: "";
 }
-
-.tooltip .tooltiptext {
-  background-color: white;
-  border: solid;
-  border-width: 2px;
-  border-radius: 5px;
-  padding: 5px;
-}
+*/
 
 /* expand */
-.tooltip.expand:before {
-  transform: scale3d(0.2, 0.2, 1);
-  transition: all 0.2s ease-in-out;
-}
-.tooltip.expand:after {
-  transform: translate3d(0, 6px, 0);
-  transition: all 0.1s ease-in-out;
-}
-.tooltip.expand:hover, .tooltip.expand:hover:after, .tooltip.expand:hover:before {
-  opacity: 1;
-  transform: scale3d(1, 1, 1);
-}
-.tooltip.expand:hover:after {
-  transition: all 0.2s 0.1s ease-in-out;
-}
-
-.feature_label:hover .tooltip, .feature_label.tooltip.expand:hover:before .tooltip, .feature_label.tooltip.expand:hover:after .tooltip {
+/*
+.feature_label:hover .tooltip {
   display: block;
+}
+*/
+
+.feature_label:hover {
+  fill:white;
+  cursor: default;
 }
 
 /*# sourceMappingURL=style.css.map */

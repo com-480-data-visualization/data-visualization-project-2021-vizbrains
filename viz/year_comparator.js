@@ -47,17 +47,19 @@ function translate(x, y) {
 // }
 
 // Adapted from https://www.d3-graph-gallery.com/graph/interactivity_tooltip.html
+/*
 // create a tooltip
 var tooltip = d3.select("div#year_comparator_div")
   .append("div")
   .style("opacity", 0)
   .attr("class", "tooltip")
   // Change in css
-  .style("background-color", "white")
+  .style("background-color", "#110e0e")
   .style("border", "solid")
   .style("border-width", "2px")
   .style("border-radius", "5px")
   .style("padding", "5px")
+  */
 
 const feature_descs = {
   "Acousticness": "Whether the track is acoustic.",
@@ -78,7 +80,7 @@ const feature_descs = {
   "Track popularity": "How popular the track is.",
   "Valence": "The musical positiveness conveyed by a track."
 };
-
+/*
 // Three function that change the tooltip when user hover / move / leave a cell
 var mouseover = function(d) {
   tooltip
@@ -107,6 +109,7 @@ var mouseleave = function(d) {
     .style("stroke", "none")
     // .style("opacity", 0.8)
 }
+*/
 
 // --- Actual plot now ----------------------------
 class PlotYearComparator {
@@ -161,7 +164,7 @@ class PlotYearComparator {
       // .attr("viewBox", "0 0 800 500")
       .attr("viewBox", "0 0 800 500")
       // .attr("width", "90%")
-      .attr("width", "95%")
+      .attr("width", "75%")
       .attr("height", "100%")
       .style("margin-top", "0")
       .style("margin-bottom", "0");
@@ -257,8 +260,33 @@ class PlotYearComparator {
       .attr("dy", 3)
       .text(d => d.feature)
       // .attr("tooltip-text", "hello")
-      .on("mouseover", mouseover)
-      .on("mouseleave", mouseleave);
+      .on("mouseover", d => {
+        var x_idx = this.x(-0.01);
+        var y_idx = this.y(d.feature) - 50;
+        var rect_width = (feature_descs[d.feature]).length * 6
+
+        this.g.append('rect')
+          .attr("class", "tooltip_rect")
+          .attr("width", rect_width)
+          .attr("height", 30)
+          .attr("x", x_idx)
+          .attr("y", y_idx)
+          .attr("fill", "#110e0e")
+          .attr("stroke", "white")
+          .attr("rx", 5)
+          .attr("rx", 5);
+
+        this.g.append('text')
+          .attr("class", "tooltip_text")
+          .text(feature_descs[d.feature])
+          .attr("x", x_idx + (rect_width/2))
+          .attr("y", y_idx + 20)
+          .style("font-size", "12px");
+      })
+      .on("mouseleave", d => {
+        this.g.selectAll(".tooltip_rect").remove();
+        this.g.selectAll(".tooltip_text").remove();
+      });
       // Replace by description
       // .attr("data-title", d => d.feature);
 
@@ -348,17 +376,17 @@ class PlotYearComparator {
 
 whenDocumentLoaded(() => {
   var features = [
-    "Track popularity",
+    //"Track popularity",
     "Explicit",
-    "Danceability",
+    //"Danceability",
     "Energy",
-    "Speechiness",
+    //"Speechiness",
     "Acousticness",
     "Instrumentalness",
-    "Liveness",
-    "Valence",
+    //"Liveness",
+    //"Valence",
     "Artist popularity",
-    "Artist followers"
+    //"Artist followers"
   ];
 
   const data_in = "viz/data/year_averages_by_feature.json";
