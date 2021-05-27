@@ -1,5 +1,13 @@
+$textColor: rgb(200, 200, 200)
+$spotifyGreen: rgb(30, 160, 60)
+$grey1: rgb(30, 30, 30)
+$grey2: rgb(44, 46, 48)
+
 :root
-  --textColor: rgb(200, 200, 200)
+  --textColor: $textcolor
+  --spotifyGreen: $spotifyGreen
+  --grey1: $grey1
+  --grey2: $grey2
 
 *
   box-sizing: border-box
@@ -12,12 +20,9 @@ html, body, figure
   margin: 0
   border: 0
 
-$textColor: rgb(200, 200, 200)
-
 /* Default font and size */
 body
-  background: rgb(30, 30, 30)
-
+  background: $grey1
   /* default text */
   font-family: sans-serif
   font-size: 1.1rem
@@ -27,32 +32,56 @@ text
   fill: $textColor
   text-anchor: middle
 
+p
+  width: 85%
+  margin: 30px auto
+
 /* Top Navigation bar */
 .topnav
   overflow: hidden
-  margin-bottom: 50px
+  background-color: rgb(20, 20, 20)
+  height: 60px
+
+.topnav ul
+  margin: 0
+  padding-left: 0
+  padding-right: 100px
+  line-height: 60px
 
 .topnav h1
-  float: left
   margin: 0
+  padding-left: 100px
 
-.topnav a
+.topnav ul a
   float: right
   color: $textColor
   text-align: center
-  padding: 5px 5px
-  margin-right: 100px
+  margin-right: 50px
   text-decoration: none
   font-size: 17px
 
-.topnav a:hover
-  color: white
+.topnav ul a:first-child
+  float: left
 
+a
+  color: #24aeb2
+
+.title
+  position: -webkit-sticky /* Required for Safari */
+  position: sticky
+  z-index:1
+  height: 50px
+  top: 0
+  margin:0
+  padding: 10px 100px
+  background-color: $grey1
+  border-width:1px  
+  // border-bottom-style:solid
 /* SVG plots */
 
 svg
   display: block
-  padding: 30px
+  padding: 0 30px 30px 30px
   margin: 70px auto
 
 .axis line
@@ -66,7 +95,7 @@ svg
   pointer-events: all
 
 .area
-  fill: #69b3a2
+  fill: $grey2
   clip-path: url(#clip)
 
 .zoom
@@ -81,27 +110,34 @@ svg
 /* Should all circles be grouped together? */
 /* Only if all circles should share a property */
 .song_circle
-  fill: #00531d
+  fill: $spotifyGreen
   cursor: auto
 
-rect.info
-  fill: #01531d
-  opacity: 0.9
+// rect.info
+  // fill: #01531d
+  // opacity: 0.9
 
 text.info
   font-size: 12px
 
 /* For the bubble viz */
 .slider_container
-  width: 60%
+  width: 40%
   margin: auto
 
-/* Adapted from https://www.w3schools.com/howto/howto_js_rangeslider.asp */
+$slider_width: 15px
+
+@mixin slider_appearance
+  width: $slider_width
+  height: $slider_width
+  border-radius: 80%
+  cursor: pointer
+
 .slider
-  width: 80%
+  width: 85%
   height: 15px
   border-radius: 5px
-  background: #ffffff
+  background: #ff8fff
   outline: none
   opacity: 0.7
   -webkit-transition: 0.2s
@@ -110,44 +146,44 @@ text.info
   &:hover
     opacity: 1
 
-$slider_width: 15px
+  &::-webkit-slider-thumb
+    -webkit-appearance: none
+    appearance: none
+    @include slider_appearance
 
-@mixin slider_appearance
-  width: $slider_width
-  height: $slider_width
-  border-radius: 50%
-  background: #04aa6d
-  cursor: pointer
+  &::-moz-range-thumb
+    appearance: slider-horizontal
+    @include slider_appearance
 
-.slider::-webkit-slider-thumb
-  -webkit-appearance: none
-  appearance: none
-  @include slider_appearance
-
-.slider::-moz-range-thumb
-  appearance: slider-horizontal
-  @include slider_appearance
+$bubbles_red: #fe5c5c
+$dark_green: #26563d
+$dark_red: #720000
 
 #slider_year1
-  background: #69b3a2
+  background: $spotifyGreen
+  &::-webkit-slider-thumb
+    background: $dark_green
+  &::-moz-slider-thumb
+    background: #ffffff
 
 #slider_year2
-  /* background: #7c2620 */
-  background: #fe5c5c
+  background: $bubbles_red
+  &::-webkit-slider-thumb
+    background: $dark_red
+  &::-moz-slider-thumb
+    background: $dark_red
 
 text#text_year1
-  color: #69b3a2
+  color: $spotifyGreen
 
 text#text_year2
-  color: #fe5c5c
+  color: $bubbles_red
 
 circle.year1
-  fill: #69b3a2
-  stroke: black
+  fill: $spotifyGreen
 
 circle.year2
-  fill: #fe5c5c
-  stroke: black
+  fill: $bubbles_red
 
 line.y_line
   /* stroke:rgb(255,0,0) */
@@ -186,28 +222,24 @@ line.y_line
     border-bottom: 6px solid rgba(0,0,0,0.75) 
     border-left: 6px solid transparent
     content: ''
-    // height: 0
-      top: 20px
-      left: 20px
-    // width: 0
 
 
 /* expand */
-.tooltip.expand
-  &:before
-    transform: scale3d(.2,.2,1)
-    transition: all .2s ease-in-out
-  &:after
-    transform: translate3d(0,6px,0)
-    transition: all .1s ease-in-out
-  &:hover
-    opacity: 1
-    transform: scale3d(1,1,1)
-    &:before
-      @extend :hover
-    &:after
-      @extend :hover
-      transition: all .2s .1s ease-in-out
+// .tooltip.expand
+  // &:before
+    // transform: scale3d(.2,.2,1)
+    // transition: all .2s ease-in-out
+  // &:after
+    // transform: translate3d(0,6px,0)
+    // transition: all .1s ease-in-out
+  // &:hover
+    // opacity: 1
+    // transform: scale3d(1,1,1)
+    // &:before
+      // @extend :hover
+    // &:after
+      // @extend :hover
+      // transition: all .2s .1s ease-in-out
 
 .feature_label:hover .tooltip
   display: block
