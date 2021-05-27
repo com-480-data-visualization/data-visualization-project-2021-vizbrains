@@ -8,7 +8,9 @@ This might be simplified using a service such as Netlify eventually.
 The following is meant to be done in the terminal.
 You should have some browser as well as `python3` installed.
 1. Clone this repository where you want:
-`git clone https://github.com/com-480-data-visualization/data-visualization-project-2021-vizbrains`
+```
+git clone https://github.com/com-480-data-visualization/data-visualization-project-2021-vizbrains
+```
 2. `cd` into the directory root (containing `index.html`) and run `python3 -m http.server`; copy the given url
 3. Paste the url in the browser and enjoy! 
 
@@ -37,6 +39,22 @@ datasets:
 
 You can find out a lot more details about the features in our
 `EDA.ipynb` notebook (works best on Firefox).
+
+## Structure
+```
+.
+├── about.html
+├── index.html
+├── milestones                     // Our preliminary analysis and hand-ins
+└── viz
+    ├── data                       // The data we use in our visualisations
+    ├── styles                     // The stylesheet for our website
+    ├── timeline.js                // First visualisation code
+    ├── year_comparator.js         // Second visualisation code
+    └── bar_chart_comparator.js    // Third visualisation code
+```
+
+
 
 ## Milestone 1 (23rd April, 5pm)
 
