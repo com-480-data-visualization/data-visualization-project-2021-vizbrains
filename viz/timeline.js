@@ -87,7 +87,7 @@ class StretchableTimeline {
     // Back in Black by default
     foreign_object.append("xhtml:iframe")
       .attr("src", "https://open.spotify.com/embed/track/08mG3Y1vljYA6bvDt4Wqkj")
-      .attr("width", "40%")
+      .attr("width", "50%")
       .attr("height", "80")
       .style("margin", "auto")
       .style("display", "block")
@@ -153,86 +153,51 @@ class StretchableTimeline {
     
     // plot the songs data
     function plot() {
-      // console.log(data_);
-            var ticks = xAxis.scale().ticks();
-            var filtered_data = data_.filter(d => ticks.includes(d.year));
+      var ticks = xAxis.scale().ticks();
+      var filtered_data = data_.filter(d => ticks.includes(d.year));
 
-            const circle = focus.selectAll('circle')
-            .data(filtered_data);
+      const circle = focus.selectAll('circle')
+      .data(filtered_data);
 
-            // Update point parameters when zooming or scrolling
-            circle
-                .attr("cx", d => x(d.year))
-                .attr("r", d => 20)
-                .attr("cy", d => y(d.track_popularity))
-                .attr("id", d => "a"+d.id)
-                // When hovering on this song point
-                .on("mouseover", d => {
-                    // increase circle radius
-                    focus.select("#a" + d.id).attr('r', '35');
+      // Update point parameters when zooming or scrolling
+      circle
+          .attr("cx", d => x(d.year))
+          .attr("r", d => 20)
+          .attr("cy", d => y(d.track_popularity))
+          .attr("id", d => "a"+d.id)
+          // When hovering on this song point
+          .on("mouseover", d => {
+              // increase circle radius
+              focus.select("#a" + d.id).attr('r', '35');
 
-                    /*
-                    // hide the circle
-                    focus.select("#a" + d.id).attr('opacity', '0');
-                    
-                    var rect_width = Math.min(500, 15 * Math.max((d.name).length, (d.name).length));
-                    // display a transparent rectangle to put song infos into
-                    focus.append('rect')
-                    .attr("class", "info")
-                    .attr("id", "r"+d.id)
-                    .attr("width", rect_width)
-                    .attr("height", 80)
-                    .attr("x", Math.max(Math.min(x(d.year) - (rect_width/2), width - rect_width), 0))
-                    .attr("y", y(d.track_popularity) - 20)
-                    .attr("rx", 10)
-                    .attr("rx", 10);
+              foreign_object.selectAll("iframe").remove();
+              foreign_object.append("xhtml:iframe")
+                .attr("src", "https://open.spotify.com/embed/track/" + d.id)
+                .attr("width", "50%")
+                .attr("height", "80")
+                .style("margin", "auto")
+                .style("display", "block")
+                .attr("frameborder", "0")
+                .attr("allowtransparency", "true")
+                .attr("allow", "encrypted-media");
+          })
+          // When putting cursor away from this point, decrease circle radius back to its normal size
+          .on("mouseout", d => {
+              focus.select("#a" + d.id).attr('r', '20');
+          });
 
-                    // song title
-                    focus.append('text')
-                    .attr("class", "info")
-                    .text(d.name)
-                    .attr("x", Math.max(Math.min(x(d.year), width - (rect_width/2)), (rect_width/2)))
-                    .attr("y", y(d.track_popularity) +10);
+      // Add circles
+      circle
+          .enter()
+          .append('circle')
+          .attr("class", "song_circle");
 
-                    // song artist
-                    focus.append('text')
-                    .attr("class", "info")
-                    .text(d.artists.slice(1, -1).split(',')[0].slice(1, -1))
-                    .attr("x", Math.max(Math.min(x(d.year), width - (rect_width/2)), (rect_width/2)))
-                    .attr("y", y(d.track_popularity) + 40);
-                    */
-      
-                    foreign_object.selectAll("iframe").remove();
-
-                    foreign_object.append("xhtml:iframe")
-                    .attr("src", "https://open.spotify.com/embed/track/" + d.id)
-		    .attr("width", "40%")
-		    .attr("height", "80")
-		    .style("margin", "auto")
-		    .style("display", "block")
-                    .attr("frameborder", "0")
-                    .attr("allowtransparency", "true")
-                    .attr("allow", "encrypted-media");
-                })
-                // When putting cursor away from this point, decrease circle radius back to its normal size
-                .on("mouseout", d => {
-                    focus.select("#a" + d.id).attr('r', '20');
-                    //focus.select("#a" + d.id).attr('opacity', '1');
-                    //focus.selectAll(".info").remove();
-                });
-
-            // Add circles
-            circle
-                .enter()
-                .append('circle')
-                .attr("class", "song_circle");
-
-            // Remove out-of-scope circles
-            circle
-                .exit()
-                .remove();
+      // Remove out-of-scope circles
+      circle
+          .exit()
+          .remove();
                 
-        };
+    }
 
     function brushed() {
       if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom
@@ -241,8 +206,9 @@ class StretchableTimeline {
       focus.select(".area").attr("d", area);
       focus.select(".axis--x").call(xAxis);
       svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
-	.scale(width / (s[1] - s[0]))
-	.translate(-s[0], 0));
+        .scale(width / (s[1] - s[0]))
+        .translate(-s[0], 0)
+      );
       plot();
     }
 

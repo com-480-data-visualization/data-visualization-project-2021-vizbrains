@@ -9,7 +9,6 @@ function whenDocumentLoaded(action) {
 
 
 // Set the dimensions and margins of the graph
-// Should these be set elsewhere?
 const margin = {
   top: 30,
   right: 30,
@@ -38,15 +37,6 @@ function translate(x, y) {
   return "translate(" + x + ", " + y + ")"
 }
 
-// --- For when the viz is first started up ----------
-// function takeRandom(list, numberItems) { }
-
-// For generating a random year at reload
-// function randomNum(a, b) {
-  // return Math.floor((Math.random() * (b - a + 1)) + a)
-// }
-
-
 const feature_descs = {
   "Acousticness": "Whether the track is acoustic.",
   "Artist followers": "Whether the artist has many followers on Spotify",
@@ -67,46 +57,6 @@ const feature_descs = {
   "Valence": "The musical positiveness conveyed by a track."
 };
 
-// Adapted from https://www.d3-graph-gallery.com/graph/interactivity_tooltip.html
-// create a tooltip
-// var tooltip = d3.select("div#year_comparator_div")
-  // .append("div")
-  // .style("opacity", 0)
-  // .attr("class", "tooltip")
-  // // Change in css
-  // .style("background-color", "#110e0e")
-  // .style("border", "solid")
-  // .style("border-width", "2px")
-  // .style("border-radius", "5px")
-  // .style("padding", "5px")
-
-/*
-// Three function that change the tooltip when user hover / move / leave a cell
->>>>>>> fd6b39b9405f3090501360872b6e74d58f911878
-var mouseover = function(d) {
-  tooltip
-    .style("opacity", 1)
-    .html(feature_descs[d.feature])
-    // Don't know how to get the element's y position
-    // .style("left", "50%")
-    .style("left", parseInt(d3.select(this).attr("x")) + 100 + "px")
-    .style("width", "300px")
-    // .style("top", "50%");
-    .style("top", parseInt(d3.select(this).attr("y")) + 50 + "px")
-    // Modify the object you're hovering over
-  d3.select(this)
-    .style("stroke", "black")
-    // .style("opacity", 1)
-}
-var mouseleave = function(d) {
-  tooltip
-    .style("opacity", 0)
-  d3.select(this)
-    .style("stroke", "none")
-    // .style("opacity", 0.8)
-}
-*/
-
 // --- Actual plot now ----------------------------
 class PlotYearComparator {
   constructor(data, features) {
@@ -116,7 +66,6 @@ class PlotYearComparator {
     this.years = ["1950", "2001"];
     
     // Sliders
-    // var sliderDiv = d3.select("div#year_comparator_div")
     var sliderDiv = d3.select("div.slider_container");
 
     // For year 1
@@ -135,7 +84,6 @@ class PlotYearComparator {
       .text(this.years[0]);
 
     // For year 2
-    // Repetition here...
     this.slider2 = sliderDiv.append("input")
       .classed("slider", true)
       .attr("id", "slider_year2")
@@ -162,24 +110,16 @@ class PlotYearComparator {
     this.xRange = [o_x + margin.left, w - margin.right];
     this.yRange = [o_y + margin.top, h - margin.bottom].reverse();
 
-    // --- Set background -------------------------
-    // this.svg.append('rect')
-      // .classed('plot-background', true)
-      // .attr('width', w)
-      // .attr('height', h);
-
     // --- Create X labels -------------------------
     this.x = d3.scaleLinear()
       .range(this.xRange)
       .domain([0,1])
 
     this.g = this.svg.append("g");
-      // .attr("transform", "translate(40,0)");
 
     this.draw();
   };
 
-  // Could I regroup draw and redraw? It's duplicate code...
   draw() {
     // Pick the 2 years from the data, then filter to get only the desired features
     this.data = selectData(
@@ -203,32 +143,6 @@ class PlotYearComparator {
       .range(this.yRange)
       .domain(this.features)
       .padding([0.5]);
-
-    // let y_axis = this.g.append("g")
-      // .classed("y-axis", true)
-      // .attr("transform",
-  // "translate("
-  // + this.x(0)
-  // + ", "
-  // + 0
-  // + ")")
-      // .call(d3.axisLeft(this.y)
-  // .tickPadding([10])
-  // .tickSizeOuter([0])
-      // )
-      // .selectAll("text")
-  // .classed("feature_label", true)
-        // .style("text-anchor", "end");
-
-    // y_axis.append("g")
-      // .classed("y-gridlines", true)
-      // .append(
-      // .attr("transform",
-  // "translate("
-  // + this.x(0)
-  // + ", "
-  // + 0
-  // + ")")
       
     let y_lines = this.g.append("g")
       .classed("y_line", true);
@@ -244,7 +158,6 @@ class PlotYearComparator {
       .attr("y", d => this.y(d.feature))
       .attr("dy", 3)
       .text(d => d.feature)
-      // .attr("tooltip-text", "hello")
       .on("mouseover", d => {
         var x_idx = this.x(-0.01);
         var y_idx = this.y(d.feature) - 50;
@@ -272,8 +185,6 @@ class PlotYearComparator {
         this.g.selectAll(".tooltip_rect").remove();
         this.g.selectAll(".tooltip_text").remove();
       });
-      // Replace by description
-      // .attr("data-title", d => d.feature);
 
     y_lines.selectAll("line.y_line")
       .data(this.data)

@@ -1,15 +1,15 @@
 :root {
-  --textColor: $textcolor;
-  --spotifyGreen: $spotifyGreen;
-  --grey1: $grey1;
-  --grey2: $grey2;
+  --textColor: rgb(200, 200, 200);
+  --spotifyGreen: rgb(30, 160, 60);
+  --grey1: rgb(30, 30, 30);
+  --grey2: rgb(44,46,48);
 }
 
 * {
   box-sizing: border-box;
 }
 
-/* Make the document fill the whole viewport, this overrides any weird defaults that browsers might have.  */
+/* Make the document fill the whole viewport */
 html, body, figure {
   width: 100%;
   height: 100%;
@@ -20,15 +20,15 @@ html, body, figure {
 
 /* Default font and size */
 body {
-  background: #1e1e1e;
+  background: var(--grey1);
   /* default text */
   font-family: sans-serif;
   font-size: 1.1rem;
-  color: #c8c8c8;
+  color: var(--textColor);
 }
 
 text {
-  fill: #c8c8c8;
+  fill: var(--textColor);
   text-anchor: middle;
 }
 
@@ -58,7 +58,7 @@ p {
 
 .topnav ul a {
   float: right;
-  color: #c8c8c8;
+  color: var(--textColor);
   text-align: center;
   margin-right: 50px;
   text-decoration: none;
@@ -69,8 +69,8 @@ p {
   float: left;
 }
 
-a {
-  color: #24aeb2;
+.topnav ul a:hover {
+  color: white;
 }
 
 a {
@@ -85,8 +85,9 @@ a {
   top: 0;
   margin: 0;
   padding: 10px 100px;
-  background-color: #1e1e1e;
+  background-color: var(--grey1);
   border-width: 1px;
+  border-bottom-style:solid;
 }
 
 /* SVG plots */
@@ -99,11 +100,11 @@ svg {
 }
 
 .axis line {
-  stroke: #c8c8c8;
+  stroke: var(--textColor);
 }
 
 .axis path {
-  stroke: #c8c8c8;
+  stroke: var(--textColor);
 }
 
 .focus {
@@ -112,7 +113,7 @@ svg {
 }
 
 .area {
-  fill: #2c2e30;
+  fill: var(--grey2);
   clip-path: url(#clip);
 }
 
@@ -128,10 +129,8 @@ svg {
   fill: none;
 }
 
-/* Should all circles be grouped together? */
-/* Only if all circles should share a property */
 .song_circle {
-  fill: #1ea03c;
+  fill: var(--spotifyGreen);
   cursor: auto;
 }
 
@@ -212,50 +211,11 @@ circle.year2 {
 }
 
 line.y_line {
-  /* stroke:rgb(255,0,0) */
   stroke-width: 1;
   stroke: #000;
 }
-
-/* setup tooltips */
-/*
-.tooltip {
-  position: relative;
-  background-color: #110e0e;
-  border: solid;
-  border-width: 2px;
-  border-radius: 5px;
-  padding: 5px;
-}
-.tooltip:before {
-  display: block;
-  opacity: 0;
-  pointer-events: none;
-  background: #3c3c3c;
-  border-radius: 2px;
-  color: #444;
-  font-size: 14px;
-  padding: 6px 10px;
-  white-space: nowrap;
-}
-.tooltip:after {
-  display: block;
-  opacity: 0;
-  pointer-events: none;
-  border-right: 6px solid transparent;
-  border-bottom: 6px solid rgba(0, 0, 0, 0.75);
-  border-left: 6px solid transparent;
-  content: "";
-}
-/*
-.feature_label:hover .tooltip {
-  display: block;
-}
-*/
 
 .feature_label:hover {
   fill:white;
   cursor: default;
 }
-
-/*# sourceMappingURL=style.css.map */
