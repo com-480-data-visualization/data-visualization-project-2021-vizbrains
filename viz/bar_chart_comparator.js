@@ -215,7 +215,7 @@ class BarChartComparator {
             .attr("height", function(d) { 
                 return h - yScale(d.value[0]); })
             .transition()
-            .duration(2000)
+            .duration(100)
             .attr("y", function(d) { return yScale(d.value[1]); })
             .attr("height", function(d) { 
                 return h - yScale(d.value[1]); })
