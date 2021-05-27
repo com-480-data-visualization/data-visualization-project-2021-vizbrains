@@ -73,6 +73,10 @@ a {
   color: #24aeb2;
 }
 
+a {
+  color: #24aeb2;
+}
+
 .title {
   position: -webkit-sticky;
   position: sticky;
@@ -90,6 +94,8 @@ svg {
   display: block;
   padding: 0 30px 30px 30px;
   margin: 70px auto;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .axis line {
@@ -149,6 +155,7 @@ text.info {
   -webkit-transition: 0.2s;
   transition: opacity 0.2s;
 }
+
 .slider:hover {
   opacity: 1;
 }
@@ -211,9 +218,10 @@ line.y_line {
 }
 
 /* setup tooltips */
+/*
 .tooltip {
   position: relative;
-  background-color: white;
+  background-color: #110e0e;
   border: solid;
   border-width: 2px;
   border-radius: 5px;
@@ -239,10 +247,15 @@ line.y_line {
   border-left: 6px solid transparent;
   content: "";
 }
-
-/* expand */
+/*
 .feature_label:hover .tooltip {
   display: block;
+}
+*/
+
+.feature_label:hover {
+  fill:white;
+  cursor: default;
 }
 
 /*# sourceMappingURL=style.css.map */

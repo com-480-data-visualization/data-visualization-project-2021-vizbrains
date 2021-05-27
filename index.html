@@ -24,7 +24,7 @@
       <p>
         Since the 1920s, music changed dramatically. The 20th century is actually described as the “age of musical diversity”. Nowadays the streaming platforms dominate the industry, and allow us to bring together all these musical works.
         <br><br>
-        So what were the most popular songs through the years and how actually popular were they ? On the timeline below, we selected for each year the most popular song according to Spotify statistics.
+        So what were the most popular songs throughout the years and how popular were they ? On the timeline below, we selected for each year the most popular song according to Spotify statistics.
         <br><br>
         Feel free to navigate on the timeline and listen to the samples.
         <br>
@@ -33,31 +33,35 @@
         • Navigate through the timeline with the horizontal scroll bar, or by dragging the cursor directly on the graph.
         <br><br>
       </p>
-      <svg id="timeline" viewBox="0 0 1000 600" width ="60%" height="100%"></svg>
+      <svg id="timeline" viewBox="0 0 1000 600" width ="80%" height="100%"></svg>
     </div>
 
     <div id="year_comparator_div">
       <h2 class="title">Year Comparator</h2>
-	<p>
-	  Was music happier in the 1950s or in the 2000s? Was it easier to find music to dance on in the 1930s or in the 1980s?
-	  In this next visualisation, you can find out exactly this!
-	  <br>
-	  Hover over the attribute names to get a short description of what they measure, and change the years dynamically using the 2 sliders below.
-	  <br>
-	  If needed, you can find more information on the features <a href="https://developer.spotify.com/documentation/web-api/reference/#object-audiofeaturesobject">here</a>
-	</p>
-      <!-- <svg id="year_comparator" viewBox="0 0 800 500" width ="90%" height="100%"></svg> -->
-	<p>
-	  It seems like music only get explicit very recently. Is that surprising to you?
-	  <br>
-	  Also, do you see how similar 1987 and 2008 look, even though there are 20 years apart?
-	  Perhaps by using all the features we could gather a better picture, but the graph would be more crowded.
-	</p>
+      <p>
+        Was music happier in the 1950s or in the 2000s? Was it easier to find music to dance on in the 1930s or in the 1980s?
+        In this next visualisation, you can find out exactly this!
+        <br>
+        Hover over the attribute names to get a short description of what they measure, and change the years dynamically using the 2 sliders below.
+        <br>
+        If needed, you can find more information on the features <a href="https://developer.spotify.com/documentation/web-api/reference/#object-audiofeaturesobject">here</a>
+      </p>
+      <svg id="year_comparator" viewBox="0 0 800 500" width="75%" height="100%"></svg>
+      <p>
+        It seems like music only get explicit very recently. Is that surprising to you?
+        <br>
+        Also, do you see how similar 1987 and 2008 look, even though there are 20 years apart?
+        Perhaps by using all the features we could gather a better picture, but the graph would be more crowded.
+        Note that a feature value (here in %) is calculated as the mean of its values for the top tracks per year.
+      </p>
     </div>
 
-    <div>
-      <h2 class="title">3rd Visu</h2>
+    <div id="bar_chart_comparator_div">
+      <h2 class="title">Popular Genres</h2>
       <p>
+        The following visualization clearly depicts the evolution of musical tastes over the last century. It allows to answer questions such as: what kind of music did our grand parents and parents listen to ? What kind of music  
+        For instance, if we take a close look at what happens from 1955 to 1980, we can see that Jazz, R&B and Soul gradually give way to Rock and Pop. We can also see the emergence of Hip Hop in the 90's.
+          À finir + idées: order bar chart 
         A REMPLACER For the final milestone, you need to create a cool, interactive, and sufficiently complex D3.js (and other) data viz on the dataset you chose. Tell a data story and explain it to the targeted audience. Create a process book that details how you got there, from the original idea to the final product.
       </p>
     </div>
@@ -71,5 +75,6 @@
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="viz/timeline.js"></script>
   <script src="viz/year_comparator.js"></script>
+  <script src="viz/bar_chart_comparator.js"></script>
 </body>
 </html>
