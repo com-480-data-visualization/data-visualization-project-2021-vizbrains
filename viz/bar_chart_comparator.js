@@ -36,12 +36,6 @@ function merge_data(data, prev_data) {
     }
     return res
 }
-
-/*
-function range(start, end) {
-    return [...Array(end + 1).keys()].slice(start)
-}
-*/
   
 // --- Refactor translate function as it is used a lot ---
 function translate(x, y) {
@@ -103,7 +97,6 @@ function colorPicker(d) {
         return "#0004c8";
     } else {
         // Bleu encore plus foncé
-        // 
         return "#00006c";
     }
 }
@@ -146,17 +139,10 @@ class BarChartComparator {
             .append("svg")
             .attr("id", "bar_chart_comparator")
             .attr("viewBox", "0 0 " + w + " " + h)
-            .attr("width", "90%")
+            .attr("width", "80%")
             .attr("height", "80%")
             .style("margin-top", "0")
             .style("margin-bottom", "0");
-        
-        this.svg.append("text")
-            .attr("transform", translate(300,0))
-            .attr("x", 50)
-            .attr("y", 50)
-            .attr("font-size", "24px")
-            .text("Genres popularity in " + this.year)
         
         var margin = 200
         this.width = w - margin
@@ -174,6 +160,13 @@ class BarChartComparator {
     }
 
     draw(merged_data) {
+        this.svg.append("text")
+            .attr("class", "chart_title")
+            .attr("transform", translate(this.width/2,0))
+            .attr("x", 50)
+            .attr("y", 50)
+            .attr("font-size", "30px")
+            .text("Genres popularity in " + this.year)
 
         // Define scales for the x-axis and y-axis
         var xScale = d3.scaleBand().range([0, this.width]).padding(0.4),
@@ -280,6 +273,9 @@ whenDocumentLoaded(() => {
             bar_chart.g.selectAll(".bar")
                 .remove()
                 .exit()
+            // remove chart title
+            bar_chart.svg.selectAll(".chart_title")
+                .remove()
             bar_chart.draw(merged_data);
         });
     });
