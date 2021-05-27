@@ -36,6 +36,15 @@ function merge_data(data, prev_data) {
     }
     return res
 }
+
+// --- Get the order of genres (in ordered_data)
+function get_genres_order(ordered_data) {
+    var res = []
+    for (var i = 0; i < ordered_data.length; i++) {
+        res.push(ordered_data[i].genre)
+    }
+    return res
+}
   
 // --- Refactor translate function as it is used a lot ---
 function translate(x, y) {
@@ -113,6 +122,23 @@ class BarChartComparator {
         this.year = "2001";
         
         var barChartDiv = d3.select("div#bar_chart_comparator_div")
+
+        // On/Off order switch
+        var OrderSwitch = barChartDiv
+            .append("div")
+            .classed("switch_container", true);
+        
+        // Adds text corresponding to switch
+        OrderSwitch.append("text")
+            .classed("switchText", true)
+            .attr("id", "switch_text")
+            .text("Ordered Graph")
+
+        this.switch = OrderSwitch.append("input")
+            .attr("class", "switch")
+            .attr("type", "checkbox")
+            .style("checked", "false")
+
         // Slider
         var sliderDiv = barChartDiv
             .append("div")
@@ -134,17 +160,17 @@ class BarChartComparator {
         
         // SVG canvas
         var w = 1200,
-        h = 800
+        h = 700
         this.svg = barChartDiv
             .append("svg")
             .attr("id", "bar_chart_comparator")
             .attr("viewBox", "0 0 " + w + " " + h)
             .attr("width", "80%")
             .attr("height", "80%")
-            .style("margin-top", "0")
+            .style("margin-top", "30")
             .style("margin-bottom", "0");
         
-        var margin = 200
+        var margin = 350
         this.width = w - margin
         this.height = h - margin
 
@@ -159,12 +185,12 @@ class BarChartComparator {
         this.draw(merged_data);
     }
 
-    draw(merged_data) {
+    draw(data) {
         this.svg.append("text")
             .attr("class", "chart_title")
             .attr("transform", translate(this.width/2,0))
-            .attr("x", 50)
-            .attr("y", 50)
+            .attr("x", 70)
+            .attr("y", 30)
             .attr("font-size", "30px")
             .text("Genres popularity in " + this.year)
 
@@ -178,33 +204,50 @@ class BarChartComparator {
             .attr("transform", translate(100,100));
 
         xScale.domain(this.genres);
-        yScale.domain([0, 100]);
+        yScale.domain([0, 70]);
         
         this.g.append("g")
+            .attr("class", "axis")
             .attr("transform", translate(0,this.height))
             .call(d3.axisBottom(xScale))
             .append("text")
-            .attr("y", this.height/12)
+            .attr("y", this.height/10)
             .attr("x", this.width/2 - 20)
             .attr("font-size", "15px")
             .text("Genre");
 
         this.g.append("g")
+            .attr("class", "axis")
             .call(d3.axisLeft(yScale).tickFormat(function(d){
                 return d + "%";
             })
             .ticks(10))
             .append("text")
             .attr("transform", "rotate(-90)")
-            .attr("y", -this.height/12)
-            .attr("x", -this.width/4 - 50)
+            .attr("y", -this.height/10)
+            .attr("x", -this.width/5)
             .attr("font-size", "15px")
             .text("Popularity");
 
-        // `this.height` now working inside the function (SVGAnimatedLength)
+        // `this.height` not working inside the function (SVGAnimatedLength)
         var h = this.height
-        this.g.selectAll(".bar")
-            .data(merged_data)
+        if (this.switch["_groups"][0][0].checked) {
+            // if ordered is checked :
+            this.g.selectAll(".bar")
+            .data(data)
+            .enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", function(d) { return xScale(d.genre); })
+            .attr("y", function(d) { return yScale(d.value[1]); })
+            // call the color picker to get the fill.
+            .style("fill", function(d) { return colorPicker(d); })
+            .attr("width", xScale.bandwidth())
+            .attr("height", function(d) { 
+                return h - yScale(d.value[1]); });
+        } else {
+            // if ordered is not checked :
+            this.g.selectAll(".bar")
+            .data(data)
             .enter().append("rect")
             .attr("class", "bar")
             .attr("x", function(d) { return xScale(d.genre); })
@@ -215,10 +258,11 @@ class BarChartComparator {
             .attr("height", function(d) { 
                 return h - yScale(d.value[0]); })
             .transition()
-            .duration(100)
+            .duration(500)
             .attr("y", function(d) { return yScale(d.value[1]); })
             .attr("height", function(d) { 
-                return h - yScale(d.value[1]); })
+                return h - yScale(d.value[1]); });
+        }
     };
 
 }
@@ -273,10 +317,45 @@ whenDocumentLoaded(() => {
             bar_chart.g.selectAll(".bar")
                 .remove()
                 .exit()
+            // remove axis
+            bar_chart.g.selectAll(".axis")
+                .remove()
+                .exit()
             // remove chart title
             bar_chart.svg.selectAll(".chart_title")
                 .remove()
+            // update ordered info (not ordered anymore once slided)
+            bar_chart.switch["_groups"][0][0].checked = false
             bar_chart.draw(merged_data);
+        });
+
+        // --- What to do when slider is changed ---
+        bar_chart.switch.on("input", function(){
+            var fitting_data = transform_data(bar_chart.data_full[bar_chart.year])
+            // deep copy
+            var ordered_data = JSON.parse(JSON.stringify(fitting_data))
+            var genres_ordering = genres
+            if(bar_chart.switch["_groups"][0][0].checked) {
+                // if ordered checked then order data
+                ordered_data = ordered_data.sort(function(a,b) {
+                    return b.value - a.value;
+                });
+                genres_ordering = get_genres_order(ordered_data)
+            } 
+            // else if ordered is not checked 
+            // we can keep "ordered_data" as not ordered. 
+            // and we keep normal genres order
+            var merged_data = merge_data(ordered_data, fitting_data)
+            bar_chart.genres = genres_ordering
+            // remove previous bars
+            bar_chart.g.selectAll(".bar")
+                .remove()
+                .exit()
+            // remove axis
+            bar_chart.g.selectAll(".axis")
+                .remove()
+                .exit()
+            bar_chart.draw(merged_data)
         });
     });
   });

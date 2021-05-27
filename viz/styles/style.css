@@ -138,6 +138,22 @@ text.info {
   font-size: 12px;
 }
 
+/* For switch */
+.switch_container {
+  width: 30%;
+  margin: auto;
+}
+.switch {
+  width: 10%;
+  height: 28px;
+  margin: auto;
+}
+
+text#switch_text {
+  font-size: 20px;
+  margin: auto;
+}
+
 /* For the bubble viz */
 .slider_container {
   width: 40%;
