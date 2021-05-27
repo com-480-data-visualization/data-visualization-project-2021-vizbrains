@@ -140,17 +140,16 @@ text.info {
 
 /* For switch */
 .switch_container {
-  width: 30%;
+  width: 40%;
   margin: auto;
 }
 .switch {
   width: 10%;
-  height: 28px;
+  height: 20px;
   margin: auto;
 }
 
 text#switch_text {
-  font-size: 20px;
   margin: auto;
 }
 

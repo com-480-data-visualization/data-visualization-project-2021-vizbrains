@@ -127,17 +127,18 @@ class BarChartComparator {
         var OrderSwitch = barChartDiv
             .append("div")
             .classed("switch_container", true);
-        
-        // Adds text corresponding to switch
-        OrderSwitch.append("text")
-            .classed("switchText", true)
-            .attr("id", "switch_text")
-            .text("Ordered Graph")
 
         this.switch = OrderSwitch.append("input")
             .attr("class", "switch")
             .attr("type", "checkbox")
             .style("checked", "false")
+
+        // Adds text corresponding to switch
+        OrderSwitch.append("text")
+            .classed("switchText", true)
+            .attr("id", "switch_text")
+            .text("Ordered Graph")
+            
 
         // Slider
         var sliderDiv = barChartDiv
