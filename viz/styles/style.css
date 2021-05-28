@@ -33,7 +33,7 @@ text {
 }
 
 p {
-  font-size: 0.95rem;
+  font-size: 1.1vw;
   width: 100%;
   margin: 20px auto;
   padding: 20px 7.5%;
@@ -45,6 +45,30 @@ p {
   width: 85%;
   margin: 25px auto;
   line-height: 1.5;
+  font-size: 1.2vw;
+}
+
+.overview p {
+  font-size: 1.1vw;
+  padding-right: 0;
+}
+
+.overview img {
+  display: inline-block;
+  max-height: 7.5em;
+}
+
+.overview img.to_left {
+  margin-right: 2vw;
+}
+
+.overview img.to_right {
+  margin-left: 2vw;
+}
+
+.overview text {
+  display: inline-block;
+  vertical-align: top;
 }
 
 /* Top Navigation bar */
