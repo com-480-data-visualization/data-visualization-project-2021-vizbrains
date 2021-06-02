@@ -16,10 +16,10 @@ popular tracks of each year as shown here:
 
 ![A proof-of-concept of the timeline visualisation. The figure on the
 right shows the tooltip displayed on hover, containing more track
-information.](figures/timeline_1.png)
+information.](figures_m2/timeline_1.png)
 ![A proof-of-concept of the timeline visualisation. The figure on the
 right shows the tooltip displayed on hover, containing more track
-information.](figures/timeline_2.png)
+information.](figures_m2/timeline_2.png)
 
 ## User interaction
 
@@ -47,7 +47,7 @@ the music from 2 different years, as seen in the following Figure.
 
 ![A proof-of-concept of the bubble year comparator visualisation. The
 red bubbles show the average of each feature for 1950 and the green for
-2001.](figures/bubble-viz.png)
+2001.](figures_m2/bubble-viz.png)
 
 ## User interaction
 
@@ -56,14 +56,14 @@ bubbles might transition smoothly by an **animation**. The choice could
 be made through a **drop-down menu** but it could also be made using two
 **sliders** that span the whole range of years, as shown in this Figure
 ![The preliminary design for the tooltip shown on hover, as it would be
-used in the bubble visualisation.](figures/cursors.png)
+used in the bubble visualisation.](figures_m2/cursors.png)
 
 The user might also be able to choose the
 features compared through a drop-down menu. The user will be able to get
 the precise feature values by hovering on a group of bubbles, through a
 **tooltip**, as shown in this Figure.
 
-![The preliminary design for the tooltip shown on hover, as it would be used in the bubble visualisation.](figures/tooltip.png)
+![The preliminary design for the tooltip shown on hover, as it would be used in the bubble visualisation.](figures_m2/tooltip.png)
 
 ## Tools and lectures
 
@@ -84,11 +84,11 @@ spectrum, before reordering genres in decreasing order of popularity.
 This process is shown in the three next Figures.
 
 ![A schematic view of the transition between years for the bar
-chart.](figures/bar_chart1.png)
+chart.](figures_m2/bar_chart1.png)
 ![A schematic view of the transition between years for the bar
-chart.](figures/bar_chart2.png)
+chart.](figures_m2/bar_chart2.png)
 ![A schematic view of the transition between years for the bar
-chart.](figures/bar_chart3.png)
+chart.](figures_m2/bar_chart3.png)
 
 
 The choice of year could be done using the slider mechanism discussed in
@@ -117,7 +117,7 @@ in lecture 5.2: "More interactive D3".
     form shown in the next figure.
 
 ![The preliminary design for the tooltip shown on hover, as it would be
-used in the bubble visualisation.](figures/disney.png)
+used in the bubble visualisation.](figures_m2/disney.png)
 
 Note that our project will be mainly using the following lectures: "Web
 Development", "Javascript" (all lectures), "D3.js", "Interactions"; and
