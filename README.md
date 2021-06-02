@@ -3,16 +3,18 @@
 ![Our logo](img/logo.png)
 
 ## Setup and usage
-This might be simplified using a service such as Netlify eventually.
+You can find our presentation of this work [here](https://youtu.be/Z96k7C6QDQw).
 
-The following is meant to be done in the terminal.
+If the site is up, you'll be able to access it [here](https://mystifying-poincare-a40762.netlify.app).
+
+Otherwise, the following is meant to be done in the terminal.
 You should have some browser as well as `python3` installed.
 We recommend Firefox or Google Chrome for the best experience.
 1. Clone this repository where you want:
 ```
 git clone https://github.com/com-480-data-visualization/data-visualization-project-2021-vizbrains
 ```
-2. `cd` into the directory root (containing `index.html`) and run `python3 -m http.server`; copy the given url
+2. `cd` into the root directory (containing `index.html`) and run `python3 -m http.server`; copy the given url
 3. Paste the url in the browser and enjoy! 
 
 More information about the audio features we use can be found [here](https://developer.spotify.com/documentation/web-api/reference/#object-audiofeaturesobject).
