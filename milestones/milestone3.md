@@ -223,7 +223,9 @@ However there are some aspects that we had not anticipated at first:
     see what are the main genres of a particular year. However, in the
     end, we decided to rather order it randomly as it looks more like
     the spectrum and is still clear. The user still has the option to
-    order the graph for the current year by clicking on a button.
+    order the graph for the current year by clicking on a button. It is
+    even more interesting as this way, he can also follow the evolution
+    of top genres of a certain year throughout the century.
 
 -   **Transition**: The idea that we mentioned in Milestone 2 (see ) was
     to have a "loading" phase that would look similar to . However, we
