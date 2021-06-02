@@ -1,4 +1,4 @@
-![image](figures/logo.png)
+![image](figures_m3/logo.png)
 
 # Dataset & Exploratory Data Analysis
 
@@ -68,8 +68,8 @@ year on the $x$-axis and popularity on the $y$-axis. Hovering on a
 circle causes it to be replaced by a tooltip containing the song title
 and artist.
 
-![A proof-of-concept of the timeline visualisation. The figure on the right shows the tooltip displayed on hover, containing track information.](figures/timeline_1.png "fig:")
-![A proof-of-concept of the timeline visualisation. The figure on the right shows the tooltip displayed on hover, containing track information.](figures/timeline_2.png "fig:")
+![A proof-of-concept of the timeline visualisation. The figure on the right shows the tooltip displayed on hover, containing track information.](figures_m3/timeline_1.png "fig:")
+![A proof-of-concept of the timeline visualisation. The figure on the right shows the tooltip displayed on hover, containing track information.](figures_m3/timeline_2.png "fig:")
 
 Then, we had the idea to incorporate sound samples for the user to have
 a glimpse at each song. After all, in a project about music, it makes
@@ -79,7 +79,7 @@ was to include the sample directly in the tooltip when hovering on a
 song, but we quickly realised that our implementation with D3.js made
 this impractical.
 
-![Spotify Embed widget, in compact format.](figures/spotify_embed.png)
+![Spotify Embed widget, in compact format.](figures_m3/spotify_embed.png)
 
 Another approach was to display the Spotify widget on a fixed position,
 at the top of the visualisation. We finally went with this solution.
@@ -92,8 +92,8 @@ on the song circles. The final result is showed on . As a final note on
 this first visualisation, regarding the colors, we chose to stay simple,
 and pretty much match the Spotify color theme.
 
-![Final version of the Timeline visualization.](figures/timeline_3.png "fig:")
-![Final version of the Timeline visualization.](figures/timeline_4.png "fig:")
+![Final version of the Timeline visualization.](figures_m3/timeline_3.png "fig:")
+![Final version of the Timeline visualization.](figures_m3/timeline_4.png "fig:")
 
 ## Year comparator visualisation
 
@@ -137,7 +137,7 @@ bubbles so that we could clearly see which was the biggest, and the
 absolute value of the features was secondary to us so we did not have to
 worry about issues with perception. You can see our first prototype in .
 
-![The first version of the bubble year comparator visualisation. The red bubbles show the average of each feature for 1950 and the green for 2001.](figures/bubble_viz_fail_opaque.png)
+![The first version of the bubble year comparator visualisation. The red bubbles show the average of each feature for 1950 and the green for 2001.](figures_m3/bubble_viz_fail_opaque.png)
 
 One can see that for each feature, the smallest bubble is always in the
 foreground, which is obviously desirable otherwise we might only see one
@@ -160,7 +160,7 @@ stays the same regardless of which bubble is smallest, the back green
 color and the back red color (that can be seen on the outside of the
 Valence bubble). This is also disorienting for the user.
 
-![The same as but the front bubble is 50% transparent.](figures/bubble_viz_fail_transparent.png)
+![The same as but the front bubble is 50% transparent.](figures_m3/bubble_viz_fail_transparent.png)
 
 Finally, updating the size of the bubbles dynamically proved to be a bit
 too difficult, especially regarding those `use` tags that were mentioned
@@ -172,7 +172,7 @@ Our second (and current) version is a "lollipop" graph that resembles a
 scatter plot. shows the visualisation in its current state, showing the
 exact same data that was used in and .
 
-![image](figures/bubble_viz.png)
+![image](figures_m3/bubble_viz.png)
 
 With this format comparison is also very easy, but now the absolute
 value of the bubbles can also be displayed and understood easily.
@@ -210,7 +210,7 @@ some research, we were reminded of the spectrum technique that is often
 used to visualise musical features in *individual* tracks (see next figure), which
 lead us to the interactive bar chart idea.
 
-![image](figures/musical_waves.png)
+![image](figures_m3/musical_waves.png)
 
 However there are some aspects that we had not anticipated at first:
 
@@ -232,9 +232,9 @@ However there are some aspects that we had not anticipated at first:
     finally decided to simply transition from previous to current state,
     as it actually looked nicer.
 
-![A schematic view of the transition between years for the bar chart as we imagined it in milestone 2.](figures/bar_chart1.png "fig:")
-![A schematic view of the transition between years for the bar chart as we imagined it in milestone 2.](figures/bar_chart2.png "fig:")
-![A schematic view of the transition between years for the bar chart as we imagined it in milestone 2.](figures/bar_chart3.png "fig:")
+![A schematic view of the transition between years for the bar chart as we imagined it in milestone 2.](figures_m3/bar_chart1.png "fig:")
+![A schematic view of the transition between years for the bar chart as we imagined it in milestone 2.](figures_m3/bar_chart2.png "fig:")
+![A schematic view of the transition between years for the bar chart as we imagined it in milestone 2.](figures_m3/bar_chart3.png "fig:")
 
 # Individual features
 
