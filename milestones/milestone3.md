@@ -224,7 +224,7 @@ However there are some aspects that we had not anticipated at first:
     end, we decided to rather order it randomly as it looks more like
     the spectrum and is still clear. The user still has the option to
     order the graph for the current year by clicking on a button. It is
-    even more interesting as this way, he can also follow the evolution
+    even more interesting as this way, they can also follow the evolution
     of top genres of a certain year throughout the century.
 
 -   **Transition**: The idea that we mentioned in Milestone 2 (see ) was
